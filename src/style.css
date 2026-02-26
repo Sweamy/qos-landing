@@ -1,0 +1,261 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom Animations & Properties */
+:root {
+  --color-1: 227 91% 36%;
+  --color-2: 218 80% 64%;
+  --color-3: 160 84% 39%;
+  --color-4: 52 59% 48%;
+  --color-5: 227 91% 36%;
+
+  /* Aurora Colors */
+  --white: #ffffff;
+  --black: #000000;
+  --transparent: transparent;
+  --blue-200: #bfdbfe;
+  --blue-300: #93c5fd;
+  --blue-400: #60a5fa;
+  --blue-500: #3b82f6;
+  --indigo-200: #c7d2fe;
+  --indigo-300: #a5b4fc;
+  --violet-100: #ede9fe;
+  --violet-200: #ddd6fe;
+}
+
+/* Animations */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeLeft {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeRight {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse-slow {
+
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes glowPulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(8, 44, 174, 0.3);
+  }
+
+  50% {
+    box-shadow: 0 0 40px rgba(8, 44, 174, 0.6);
+  }
+}
+
+@keyframes shape-float {
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-15px);
+  }
+}
+
+@keyframes elegant-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-150px) rotate(-15deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+  }
+}
+
+.animate-shape-float {
+  animation: shape-float 12s ease-in-out infinite;
+}
+
+.elegant-enter {
+  opacity: 0;
+  /* Hidden initially before animation starts */
+  animation: elegant-enter 2.4s cubic-bezier(0.23, 0.86, 0.39, 0.96) forwards;
+}
+
+.animate-fade-up {
+  animation: fadeUp 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.animate-fade-left {
+  animation: fadeLeft 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.animate-fade-right {
+  animation: fadeRight 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-glow {
+  animation: glowPulse 2s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+
+  .animate-fade-up,
+  .animate-fade-left,
+  .animate-fade-right,
+  .animate-float,
+  .animate-glow,
+  .animate-pulse-slow {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* 3D Yellow Button */
+.btn-3d {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: #F0E46A;
+  color: #1a1a2e;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 14px 28px;
+  border-radius: 14px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 5px 0 #C4B033,
+    0 0 20px rgba(240, 228, 106, 0.4),
+    0 0 50px rgba(240, 228, 106, 0.2);
+  transition: all 0.15s ease;
+  transform: translateY(0);
+}
+
+/* Glare sweep effect */
+.btn-3d::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(105deg,
+      transparent 30%,
+      rgba(255, 255, 255, 0.5) 45%,
+      rgba(255, 255, 255, 0.8) 50%,
+      rgba(255, 255, 255, 0.5) 55%,
+      transparent 70%);
+  animation: glare-sweep 3s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes glare-sweep {
+  0% {
+    left: -60%;
+  }
+
+  40% {
+    left: 120%;
+  }
+
+  100% {
+    left: 120%;
+  }
+}
+
+@media (min-width: 768px) {
+  .btn-3d {
+    font-size: 18px;
+    padding: 18px 40px;
+    border-radius: 16px;
+    box-shadow:
+      0 6px 0 #C4B033,
+      0 0 30px rgba(240, 228, 106, 0.5),
+      0 0 60px rgba(240, 228, 106, 0.25);
+  }
+}
+
+.btn-3d:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 0 #C4B033,
+    0 0 40px rgba(240, 228, 106, 0.6),
+    0 0 80px rgba(240, 228, 106, 0.3);
+}
+
+.btn-3d.btn-3d-no-glare::after {
+  display: none;
+}
+
+.btn-3d:active {
+  transform: translateY(4px);
+  box-shadow:
+    0 2px 0 #C4B033,
+    0 0 20px rgba(240, 228, 106, 0.4),
+    0 0 40px rgba(240, 228, 106, 0.15);
+}
