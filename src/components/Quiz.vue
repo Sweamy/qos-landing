@@ -98,7 +98,7 @@
 
             <!-- Login link -->
             <div ref="hookLogin" class="mt-8 opacity-0">
-              <a href="https://app.qos.plus" class="text-sm text-gray-400 hover:text-custom-main transition-colors underline underline-offset-4 decoration-gray-200 hover:decoration-custom-main">
+              <a href="https://qos.plus/login" class="text-sm text-gray-400 hover:text-custom-main transition-colors underline underline-offset-4 decoration-gray-200 hover:decoration-custom-main">
                 Уже есть аккаунт? Войти
               </a>
             </div>
@@ -1103,7 +1103,7 @@ function goToPrePaywall() {
 }
 
 function goToPlatform() {
-  window.location.href = 'https://qos-yurt.kz/lms/practice/sat'
+  window.location.href = 'https://qos.plus/lms/practice/sat'
 }
 
 function cleanupLoader() {
