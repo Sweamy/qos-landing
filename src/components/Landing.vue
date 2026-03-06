@@ -1131,20 +1131,19 @@ const faqs = [
 
 // Universities data
 const universities = [
-  { name: 'Johns Hopkins University', short: 'JHU' },
-  { name: 'Cornell University', short: 'CU' },
-  { name: 'UPenn', short: 'UP' },
-  { name: 'Nazarbayev University', short: 'NU' },
-  { name: 'Duke University', short: 'DU' },
-  { name: 'NYU', short: 'NYU' },
-  { name: 'MBZUAI', short: 'MBZ' },
-  { name: 'KAIST', short: 'KA' },
-  { name: 'Bocconi', short: 'BOC' },
-  { name: 'Yonsei University', short: 'YU' },
-  { name: 'Korea University', short: 'KU' },
-  { name: 'HKU', short: 'HKU' },
-  { name: 'CUHK Shenzhen', short: 'CU' },
-  { name: 'CityU HK', short: 'CIT' },
+  { name: 'Johns Hopkins University', short: 'JHU', logo: '/logos/jhu.svg' },
+  { name: 'Cornell University', short: 'CU', logo: '/logos/cornell.svg' },
+  { name: 'UPenn', short: 'UP', logo: '/logos/upenn.svg' },
+  { name: 'Nazarbayev University', short: 'NU', logo: 'https://static.tildacdn.pro/tild3863-3038-4632-b365-363362373130/NU_horizontal_1.png' },
+  { name: 'Duke University', short: 'DU', logo: '/logos/duke.svg' },
+  { name: 'NYU', short: 'NYU', logo: '/logos/nyu.svg' },
+  { name: 'KAIST', short: 'KA', logo: '/logos/kaist.svg' },
+  { name: 'Bocconi', short: 'BOC', logo: '/logos/bocconi.svg' },
+  { name: 'Yonsei University', short: 'YU', logo: '/logos/yonsei.svg' },
+  { name: 'Korea University', short: 'KU', logo: '/logos/korea.svg' },
+  { name: 'HKU', short: 'HKU', logo: '/logos/hku.svg' },
+  { name: 'CUHK Shenzhen', short: 'CU', logo: '/logos/cuhk.svg' },
+  { name: 'CityU HK', short: 'CIT', logo: '/logos/cityu.svg' },
 ]
 
 const tutorChat = ref(null)
