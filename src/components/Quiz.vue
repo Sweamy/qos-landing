@@ -598,6 +598,42 @@
           </div>
         </div>
 
+        <!-- ========== SCREEN 11: FEATURE SHOWCASE ========== -->
+        <div v-else-if="currentStep === 'featureShowcase'" key="featureShowcase" class="step-content">
+          <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12 md:py-20">
+            <h2 ref="featTitle" class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2 opacity-0">
+              Вот что тебя ждёт внутри
+            </h2>
+            <p ref="featSub" class="text-gray-500 text-center mb-8 opacity-0">
+              Персонально под твою цель — {{ answers.targetScore || 1300 }}+
+            </p>
+
+            <!-- Hero feature -->
+            <div ref="featHero" class="w-full max-w-lg rounded-2xl p-5 mb-4 opacity-0"
+                 style="background: linear-gradient(145deg, #0A1028, #082CAE); color: white;">
+              <div class="text-xs uppercase tracking-widest text-custom-input font-bold mb-2">⭐ Главное для тебя</div>
+              <h3 class="text-lg font-bold mb-2">{{ heroFeature.title }}</h3>
+              <p class="text-sm text-white/70 leading-relaxed mb-3">{{ heroFeature.desc }}</p>
+              <span class="inline-block bg-white/15 text-custom-gold text-xs font-semibold px-3 py-1.5 rounded-full">
+                {{ heroFeature.stat }}
+              </span>
+            </div>
+
+            <!-- Secondary features grid -->
+            <div ref="featGrid" class="grid grid-cols-2 gap-2 max-w-lg w-full mb-8">
+              <div v-for="feat in secondaryFeatures" :key="feat.key"
+                   class="bg-custom-input-fill rounded-2xl p-4 opacity-0">
+                <span class="text-2xl mb-1 block">{{ feat.icon }}</span>
+                <h4 class="font-bold text-sm text-gray-900 mb-0.5">{{ feat.title }}</h4>
+                <p class="text-xs text-custom-input-text">{{ feat.desc }}</p>
+              </div>
+            </div>
+
+            <div ref="featCta" class="opacity-0">
+              <button class="btn-3d !text-base md:!text-lg !px-10 !py-4" @click="goToBonuses">Продолжить &rarr;</button>
+            </div>
+          </div>
+        </div>
 
       </Transition>
     </div>
@@ -1145,6 +1181,11 @@ const loaderChecklist = ref(null)
 const loaderReviews = ref(null)
 const resultHeader = ref(null)
 const resultCard = ref(null)
+const featTitle = ref(null)
+const featSub = ref(null)
+const featHero = ref(null)
+const featGrid = ref(null)
+const featCta = ref(null)
 
 function animateHook() {
   const tl = gsap.timeline({ defaults: { ease: 'back.out(1.4)', duration: 0.35 } })
@@ -1247,6 +1288,22 @@ function animateResult() {
 }
 
 
+function animateFeatureShowcase() {
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+  tl.fromTo(featTitle.value, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 0)
+    .fromTo(featSub.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.06)
+    .fromTo(featHero.value, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35 }, 0.12)
+
+  const cards = featGrid.value.querySelectorAll('[class*="bg-custom-input-fill"]')
+  tl.fromTo(cards,
+    { opacity: 0, y: 14 },
+    { opacity: 1, y: 0, duration: 0.3, stagger: 0.05 },
+    0.25
+  )
+  tl.fromTo(featCta.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.5)
+  return tl
+}
+
 // Trigger animations AFTER the transition finishes entering
 function onStepEnter() {
   isAnimating.value = true
@@ -1261,6 +1318,7 @@ function onStepEnter() {
     anchor: animateAnchor,
     loader: animateLoader,
     result: animateResult,
+    featureShowcase: animateFeatureShowcase,
   }
   const fn = animators[currentStep.value]
   if (fn) {
