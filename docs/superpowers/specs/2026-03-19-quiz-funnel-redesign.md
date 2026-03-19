@@ -89,7 +89,7 @@ If multiple pains selected, use the first one in the list above that matches.
 - 🧠 Умный план — Адаптируется каждый день
 - 🔄 Рефлексия — Анализ после сессий
 
-(If one of these is the hero, replace it in the grid with the next available feature.)
+If the hero feature overlaps with a secondary feature (e.g., hero is "Practice Tests" and it's also in the grid), show only 3 secondary cards instead of 4 — simply omit the duplicate.
 
 #### Screen 12: Bonuses
 
@@ -169,11 +169,13 @@ Quarterly pre-selected by default.
 **Sub-CTA:** "Безопасная оплата через Polar.sh"
 **Link:** "Уже оплатил?"
 
-**On purchase:** Redirect to `https://qos.plus/lms/practice/sat`
+**On CTA click:** Redirect to `https://qos.plus/lms/practice/sat` (no in-app payment in this iteration — user completes purchase on the platform side).
+
+**"Уже оплатил?" link:** Redirects to `https://qos.plus/login`
 
 #### Screen 15: Transaction Abandonment
 
-Triggers when user attempts to close/navigate away from Paywall screen. Appears as a bottom sheet overlay.
+Appears as a bottom sheet overlay on the Paywall screen. Triggers when the user presses the browser back button or the quiz's own back button on the paywall screen. Shows at most once per session (tracked via a reactive flag). Note: `beforeunload` is unreliable on mobile browsers, so we do not depend on it.
 
 **Copy:**
 - Title: "Подожди! 🎁"
@@ -203,7 +205,8 @@ Triggers when user attempts to close/navigate away from Paywall screen. Appears 
 - STEPS array updated with new step keys: `featureShowcase`, `bonuses`, `socialProofWall`, `paywall`, `transactionAbandonment`
 - `socialProof` step removed from STEPS array
 - Feature Showcase personalization uses existing `answers.pains` array
-- Transaction abandonment triggers on `beforeunload` event and/or back button press on paywall screen
+- Transaction abandonment triggers on back button press (quiz back or browser back) on the paywall screen; shows once per session via `hasSeenAbandonment` flag
+- Promo code field is visual-only in this iteration (not wired to backend)
 - No analytics in this iteration (PostHog to be added later)
 - Payment integration with Polar.sh is out of scope for this iteration — CTA redirects to qos.plus for now
 
