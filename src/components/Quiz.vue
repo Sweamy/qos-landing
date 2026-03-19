@@ -690,6 +690,59 @@
           </div>
         </div>
 
+        <!-- ========== SCREEN 13: SOCIAL PROOF WALL ========== -->
+        <div v-else-if="currentStep === 'socialProofWall'" key="socialProofWall" class="step-content">
+          <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12 md:py-20">
+            <h2 ref="spwTitle" class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8 opacity-0">
+              Они уже это сделали
+            </h2>
+
+            <!-- Metrics -->
+            <div ref="spwMetrics" class="flex w-full max-w-lg bg-custom-blue rounded-2xl p-4 mb-6 opacity-0">
+              <div class="flex-1 text-center border-r border-blue-200">
+                <div class="text-2xl font-extrabold text-custom-main"><span ref="spwCounter89">0</span>%</div>
+                <div class="text-[10px] text-custom-input-text mt-1">достигают цели</div>
+              </div>
+              <div class="flex-1 text-center border-r border-blue-200">
+                <div class="text-2xl font-extrabold text-custom-main">+<span ref="spwCounter150">0</span></div>
+                <div class="text-[10px] text-custom-input-text mt-1">средний рост</div>
+              </div>
+              <div class="flex-1 text-center">
+                <div class="text-2xl font-extrabold text-custom-gold-dark">★ <span ref="spwCounter49">0</span></div>
+                <div class="text-[10px] text-custom-input-text mt-1">оценка</div>
+              </div>
+            </div>
+
+            <!-- Reviews -->
+            <div ref="spwReviews" class="w-full max-w-lg space-y-2 mb-6">
+              <div class="bg-custom-input-fill rounded-2xl p-4 opacity-0">
+                <div class="text-custom-orange text-xs mb-1">★★★★★</div>
+                <p class="text-sm text-gray-700 italic leading-relaxed">&laquo;1180 &rarr; 1420 за 2.5 месяца. Каждый день по 40 минут — и результат&raquo;</p>
+                <p class="text-xs text-custom-input-text mt-2">Алихан, Алматы · <strong class="text-custom-correct">+240 баллов</strong></p>
+              </div>
+              <div class="bg-custom-input-fill rounded-2xl p-4 opacity-0">
+                <div class="text-custom-orange text-xs mb-1">★★★★★</div>
+                <p class="text-sm text-gray-700 italic leading-relaxed">&laquo;Родители не верили, а я сдала на 1510. Спасибо QOS PLUS!&raquo;</p>
+                <p class="text-xs text-custom-input-text mt-2">Дана, Алматы · <strong class="text-custom-correct">1510 баллов</strong></p>
+              </div>
+              <div class="bg-custom-input-fill rounded-2xl p-4 opacity-0">
+                <div class="text-custom-orange text-xs mb-1">★★★★★</div>
+                <p class="text-sm text-gray-700 italic leading-relaxed">&laquo;С 1050 до 1340. Самое полезное — ежедневные мини-тесты&raquo;</p>
+                <p class="text-xs text-custom-input-text mt-2">Амина, Шымкент · <strong class="text-custom-correct">+290 баллов</strong></p>
+              </div>
+            </div>
+
+            <div ref="spwFooter" class="text-center bg-custom-blue rounded-xl px-6 py-3 mb-6 opacity-0">
+              <span class="text-sm font-semibold text-custom-main">2,800+ учеников уже на платформе</span>
+            </div>
+
+            <div ref="spwCta" class="text-center opacity-0">
+              <button class="btn-3d !text-base md:!text-lg !px-10 !py-4" @click="goToPaywall">Продолжить &rarr;</button>
+              <p class="text-xs text-custom-input-text mt-3">Без обязательств, отмени в любой момент</p>
+            </div>
+          </div>
+        </div>
+
       </Transition>
     </div>
   </div>
@@ -1248,6 +1301,14 @@ const bonusHero = ref(null)
 const bonusGrid = ref(null)
 const bonusValue = ref(null)
 const bonusCta = ref(null)
+const spwTitle = ref(null)
+const spwMetrics = ref(null)
+const spwCounter89 = ref(null)
+const spwCounter150 = ref(null)
+const spwCounter49 = ref(null)
+const spwReviews = ref(null)
+const spwFooter = ref(null)
+const spwCta = ref(null)
 
 function animateHook() {
   const tl = gsap.timeline({ defaults: { ease: 'back.out(1.4)', duration: 0.35 } })
@@ -1383,6 +1444,39 @@ function animateBonuses() {
   return tl
 }
 
+function animateSocialProofWall() {
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+  tl.fromTo(spwTitle.value, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3 }, 0)
+    .fromTo(spwMetrics.value, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.3 }, 0.1)
+
+  // Animated counters
+  const c89 = { val: 0 }
+  tl.to(c89, {
+    val: 89, duration: 1, ease: 'power2.out',
+    onUpdate: () => { if (spwCounter89.value) spwCounter89.value.textContent = Math.round(c89.val) }
+  }, 0.15)
+  const c150 = { val: 0 }
+  tl.to(c150, {
+    val: 150, duration: 1, ease: 'power2.out',
+    onUpdate: () => { if (spwCounter150.value) spwCounter150.value.textContent = Math.round(c150.val) }
+  }, 0.23)
+  const c49 = { val: 0 }
+  tl.to(c49, {
+    val: 4.9, duration: 1, ease: 'power2.out',
+    onUpdate: () => { if (spwCounter49.value) spwCounter49.value.textContent = c49.val.toFixed(1) }
+  }, 0.31)
+
+  const reviewCards = spwReviews.value.querySelectorAll('[class*="bg-custom-input-fill"]')
+  tl.fromTo(reviewCards,
+    { opacity: 0, y: 12 },
+    { opacity: 1, y: 0, duration: 0.3, stagger: 0.06 },
+    0.4
+  )
+  tl.fromTo(spwFooter.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.65)
+  tl.fromTo(spwCta.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.75)
+  return tl
+}
+
 // Trigger animations AFTER the transition finishes entering
 function onStepEnter() {
   isAnimating.value = true
@@ -1399,6 +1493,7 @@ function onStepEnter() {
     result: animateResult,
     featureShowcase: animateFeatureShowcase,
     bonuses: animateBonuses,
+    socialProofWall: animateSocialProofWall,
   }
   const fn = animators[currentStep.value]
   if (fn) {
