@@ -635,6 +635,61 @@
           </div>
         </div>
 
+        <!-- ========== SCREEN 12: BONUSES ========== -->
+        <div v-else-if="currentStep === 'bonuses'" key="bonuses" class="step-content">
+          <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12 md:py-20">
+            <h2 ref="bonusTitle" class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2 opacity-0">
+              А ещё ты получишь
+            </h2>
+            <p ref="bonusSub" class="text-gray-500 text-center mb-8 opacity-0">
+              Бонусы к подписке — бесплатно
+            </p>
+
+            <!-- Hero bonus: Community -->
+            <div ref="bonusHero" class="w-full max-w-lg rounded-2xl p-5 mb-4 flex items-start gap-3 opacity-0"
+                 style="background: linear-gradient(145deg, #082CAE, #0B237B); color: white;">
+              <span class="text-3xl flex-shrink-0">💬</span>
+              <div>
+                <h3 class="text-base font-bold mb-1">Telegram-комьюнити</h3>
+                <span class="inline-block bg-white/15 text-custom-gold text-[10px] font-semibold px-2 py-0.5 rounded-lg mb-2">Навсегда</span>
+                <p class="text-sm text-white/70 leading-relaxed">Закрытое сообщество. Эфиры, разборы задач, гайды по поступлению в топ-вузы мира, Q&amp;A с менторами.</p>
+              </div>
+            </div>
+
+            <!-- Secondary bonuses -->
+            <div ref="bonusGrid" class="grid grid-cols-2 gap-2 max-w-lg w-full mb-4">
+              <div class="border border-gray-100 rounded-2xl p-4 text-center bg-white opacity-0">
+                <span class="text-2xl block mb-1">🃏</span>
+                <h4 class="font-bold text-sm">Flashcards</h4>
+                <p class="text-xs text-custom-input-text">2,000+ SAT-слов</p>
+              </div>
+              <div class="border border-gray-100 rounded-2xl p-4 text-center bg-white opacity-0">
+                <span class="text-2xl block mb-1">📋</span>
+                <h4 class="font-bold text-sm">Practice Tests</h4>
+                <p class="text-xs text-custom-input-text">Полные пробники SAT</p>
+              </div>
+              <div class="border border-gray-100 rounded-2xl p-4 text-center bg-white opacity-0">
+                <span class="text-2xl block mb-1">🎯</span>
+                <h4 class="font-bold text-sm">Личный план</h4>
+                <p class="text-xs text-custom-input-text">Под твой уровень и цель</p>
+              </div>
+              <div class="border border-gray-100 rounded-2xl p-4 text-center bg-white opacity-0">
+                <span class="text-2xl block mb-1">🔄</span>
+                <h4 class="font-bold text-sm">Рефлексия</h4>
+                <p class="text-xs text-custom-input-text">Анализ после занятий</p>
+              </div>
+            </div>
+
+            <p ref="bonusValue" class="text-xs text-custom-input-text mb-6 opacity-0">
+              Ценность бонусов: <strong class="text-gray-900">~50 000 ₸</strong>
+            </p>
+
+            <div ref="bonusCta" class="opacity-0">
+              <button class="btn-3d !text-base md:!text-lg !px-10 !py-4" @click="goToSocialProofWall">Продолжить &rarr;</button>
+            </div>
+          </div>
+        </div>
+
       </Transition>
     </div>
   </div>
@@ -1187,6 +1242,13 @@ const featHero = ref(null)
 const featGrid = ref(null)
 const featCta = ref(null)
 
+const bonusTitle = ref(null)
+const bonusSub = ref(null)
+const bonusHero = ref(null)
+const bonusGrid = ref(null)
+const bonusValue = ref(null)
+const bonusCta = ref(null)
+
 function animateHook() {
   const tl = gsap.timeline({ defaults: { ease: 'back.out(1.4)', duration: 0.35 } })
   tl.fromTo(hookLogo.value, { opacity: 0, y: -12, scale: 0.9 }, { opacity: 1, y: 0, scale: 1 }, 0)
@@ -1304,6 +1366,23 @@ function animateFeatureShowcase() {
   return tl
 }
 
+function animateBonuses() {
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+  tl.fromTo(bonusTitle.value, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 0)
+    .fromTo(bonusSub.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.06)
+    .fromTo(bonusHero.value, { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.35 }, 0.12)
+
+  const cards = bonusGrid.value.querySelectorAll('[class*="border"]')
+  tl.fromTo(cards,
+    { opacity: 0, y: 14 },
+    { opacity: 1, y: 0, duration: 0.3, stagger: 0.05 },
+    0.25
+  )
+  tl.fromTo(bonusValue.value, { opacity: 0 }, { opacity: 1, duration: 0.25 }, 0.5)
+  tl.fromTo(bonusCta.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.55)
+  return tl
+}
+
 // Trigger animations AFTER the transition finishes entering
 function onStepEnter() {
   isAnimating.value = true
@@ -1319,6 +1398,7 @@ function onStepEnter() {
     loader: animateLoader,
     result: animateResult,
     featureShowcase: animateFeatureShowcase,
+    bonuses: animateBonuses,
   }
   const fn = animators[currentStep.value]
   if (fn) {
