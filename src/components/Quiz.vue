@@ -1,7 +1,7 @@
 <template>
   <div
     ref="quizContainer"
-    class="quiz-page min-h-screen font-sans relative bg-white"
+    class="quiz-page min-h-screen font-sans relative bg-[#F0F2F5]"
   >
 
     <!-- Background: Static grid (faint) -->
@@ -18,7 +18,7 @@
     </div>
 
     <!-- White card container -->
-    <div class="relative z-10 max-w-[480px] mx-auto min-h-screen bg-white shadow-[0_0_60px_rgba(0,0,0,0.08)]">
+    <div class="relative z-10 max-w-[480px] mx-auto min-h-screen bg-white/60 backdrop-blur-2xl border-x border-white/40 shadow-[0_0_80px_rgba(0,0,0,0.06)]">
 
     <!-- ==================== HEADER (visible on quiz steps only) ==================== -->
     <header
