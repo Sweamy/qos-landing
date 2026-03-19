@@ -1,7 +1,7 @@
 <template>
   <div
     ref="quizContainer"
-    class="quiz-page min-h-screen font-sans relative bg-[#F0F2F5]"
+    class="quiz-page min-h-screen font-sans relative bg-[#EAEFF6]"
   >
 
     <!-- Background: Static grid (faint) -->
@@ -11,19 +11,19 @@
       </div>
     </div>
 
-    <!-- Background: Glowing orbs (static, GPU-accelerated) -->
+    <!-- Background: Soft gradient orbs -->
     <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-      <div class="absolute right-[-10%] top-[-10%] w-[50%] h-[50%] rounded-full bg-[#FFDDC1]/50 blur-[80px] will-change-transform" />
-      <div class="absolute left-[-10%] bottom-[-10%] w-[50%] h-[50%] rounded-full bg-blue-300/50 blur-[80px] will-change-transform" />
+      <div class="absolute right-[-15%] top-[-10%] w-[55%] h-[55%] rounded-full bg-[#D6E4F7]/60 blur-[100px] will-change-transform" />
+      <div class="absolute left-[-15%] bottom-[-10%] w-[55%] h-[55%] rounded-full bg-[#E8DFF5]/50 blur-[100px] will-change-transform" />
     </div>
 
     <!-- White card container -->
-    <div class="relative z-10 max-w-[480px] mx-auto min-h-screen bg-white/60 backdrop-blur-2xl border-x border-white/40 shadow-[0_0_80px_rgba(0,0,0,0.06)]">
+    <div class="relative z-10 max-w-[480px] mx-auto min-h-screen bg-white rounded-none sm:rounded-[2rem] sm:my-4 sm:min-h-[calc(100vh-2rem)] shadow-[0_4px_40px_rgba(0,0,0,0.06),0_0_0_1px_rgba(0,0,0,0.03)] overflow-hidden">
 
     <!-- ==================== HEADER (visible on quiz steps only) ==================== -->
     <header
       v-if="showHeader"
-      class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-gray-100"
+      class="sticky top-0 z-50 bg-white border-b border-gray-100"
     >
       <div class="px-5 py-3 flex items-center gap-4">
         <!-- Back -->
