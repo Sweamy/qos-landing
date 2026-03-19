@@ -600,16 +600,16 @@
 
         <!-- ========== SCREEN 11: FEATURE SHOWCASE ========== -->
         <div v-else-if="currentStep === 'featureShowcase'" key="featureShowcase" class="step-content">
-          <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12 md:py-20">
-            <h2 ref="featTitle" class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2 opacity-0">
+          <div class="max-w-md mx-auto px-5 py-8">
+            <h2 ref="featTitle" class="text-2xl font-bold text-gray-900 text-center mb-2 opacity-0">
               Вот что тебя ждёт внутри
             </h2>
-            <p ref="featSub" class="text-gray-500 text-center mb-8 opacity-0">
+            <p ref="featSub" class="text-sm text-gray-500 text-center mb-6 opacity-0">
               Персонально под твою цель — {{ answers.targetScore || 1300 }}+
             </p>
 
             <!-- Hero feature -->
-            <div ref="featHero" class="w-full max-w-lg rounded-2xl p-5 mb-4 opacity-0"
+            <div ref="featHero" class="rounded-2xl p-5 mb-3 opacity-0"
                  style="background: linear-gradient(145deg, #0A1028, #082CAE); color: white;">
               <div class="text-xs uppercase tracking-widest text-custom-input font-bold mb-2">⭐ Главное для тебя</div>
               <h3 class="text-lg font-bold mb-2">{{ heroFeature.title }}</h3>
@@ -620,7 +620,7 @@
             </div>
 
             <!-- Secondary features grid -->
-            <div ref="featGrid" class="grid grid-cols-2 gap-2 max-w-lg w-full mb-8">
+            <div ref="featGrid" class="grid grid-cols-2 gap-2 mb-6">
               <div v-for="feat in secondaryFeatures" :key="feat.key"
                    class="bg-custom-input-fill rounded-2xl p-4 opacity-0">
                 <span class="text-2xl mb-1 block">{{ feat.icon }}</span>
@@ -630,23 +630,23 @@
             </div>
 
             <div ref="featCta" class="opacity-0">
-              <button class="btn-3d !text-base md:!text-lg !px-10 !py-4" @click="goToBonuses">Продолжить &rarr;</button>
+              <button class="btn-3d w-full !text-base !py-4" @click="goToBonuses">Продолжить &rarr;</button>
             </div>
           </div>
         </div>
 
         <!-- ========== SCREEN 12: BONUSES ========== -->
         <div v-else-if="currentStep === 'bonuses'" key="bonuses" class="step-content">
-          <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12 md:py-20">
-            <h2 ref="bonusTitle" class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2 opacity-0">
+          <div class="max-w-md mx-auto px-5 py-8">
+            <h2 ref="bonusTitle" class="text-2xl font-bold text-gray-900 text-center mb-2 opacity-0">
               А ещё ты получишь
             </h2>
-            <p ref="bonusSub" class="text-gray-500 text-center mb-8 opacity-0">
+            <p ref="bonusSub" class="text-sm text-gray-500 text-center mb-6 opacity-0">
               Бонусы к подписке — бесплатно
             </p>
 
             <!-- Hero bonus: Community -->
-            <div ref="bonusHero" class="w-full max-w-lg rounded-2xl p-5 mb-4 flex items-start gap-3 opacity-0"
+            <div ref="bonusHero" class="rounded-2xl p-5 mb-3 flex items-start gap-3 opacity-0"
                  style="background: linear-gradient(145deg, #082CAE, #0B237B); color: white;">
               <span class="text-3xl flex-shrink-0">💬</span>
               <div>
@@ -657,7 +657,7 @@
             </div>
 
             <!-- Secondary bonuses -->
-            <div ref="bonusGrid" class="grid grid-cols-2 gap-2 max-w-lg w-full mb-4">
+            <div ref="bonusGrid" class="grid grid-cols-2 gap-2 mb-4">
               <div class="border border-gray-100 rounded-2xl p-4 text-center bg-white opacity-0">
                 <span class="text-2xl block mb-1">🃏</span>
                 <h4 class="font-bold text-sm">Flashcards</h4>
@@ -680,25 +680,25 @@
               </div>
             </div>
 
-            <p ref="bonusValue" class="text-xs text-custom-input-text mb-6 opacity-0">
+            <p ref="bonusValue" class="text-xs text-custom-input-text text-center mb-6 opacity-0">
               Ценность бонусов: <strong class="text-gray-900">~50 000 ₸</strong>
             </p>
 
             <div ref="bonusCta" class="opacity-0">
-              <button class="btn-3d !text-base md:!text-lg !px-10 !py-4" @click="goToSocialProofWall">Продолжить &rarr;</button>
+              <button class="btn-3d w-full !text-base !py-4" @click="goToSocialProofWall">Продолжить &rarr;</button>
             </div>
           </div>
         </div>
 
         <!-- ========== SCREEN 13: SOCIAL PROOF WALL ========== -->
         <div v-else-if="currentStep === 'socialProofWall'" key="socialProofWall" class="step-content">
-          <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12 md:py-20">
-            <h2 ref="spwTitle" class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8 opacity-0">
+          <div class="max-w-md mx-auto px-5 py-8">
+            <h2 ref="spwTitle" class="text-2xl font-bold text-gray-900 text-center mb-6 opacity-0">
               Они уже это сделали
             </h2>
 
             <!-- Metrics -->
-            <div ref="spwMetrics" class="flex w-full max-w-lg bg-custom-blue rounded-2xl p-4 mb-6 opacity-0">
+            <div ref="spwMetrics" class="flex bg-custom-blue rounded-2xl p-4 mb-5 opacity-0">
               <div class="flex-1 text-center border-r border-blue-200">
                 <div class="text-2xl font-extrabold text-custom-main"><span ref="spwCounter89">0</span>%</div>
                 <div class="text-[10px] text-custom-input-text mt-1">достигают цели</div>
@@ -714,7 +714,7 @@
             </div>
 
             <!-- Reviews -->
-            <div ref="spwReviews" class="w-full max-w-lg space-y-2 mb-6">
+            <div ref="spwReviews" class="space-y-2 mb-5">
               <div class="bg-custom-input-fill rounded-2xl p-4 opacity-0">
                 <div class="text-custom-orange text-xs mb-1">★★★★★</div>
                 <p class="text-sm text-gray-700 italic leading-relaxed">&laquo;1180 &rarr; 1420 за 2.5 месяца. Каждый день по 40 минут — и результат&raquo;</p>
@@ -732,12 +732,12 @@
               </div>
             </div>
 
-            <div ref="spwFooter" class="text-center bg-custom-blue rounded-xl px-6 py-3 mb-6 opacity-0">
+            <div ref="spwFooter" class="text-center bg-custom-blue rounded-xl px-6 py-3 mb-5 opacity-0">
               <span class="text-sm font-semibold text-custom-main">2,800+ учеников уже на платформе</span>
             </div>
 
             <div ref="spwCta" class="text-center opacity-0">
-              <button class="btn-3d !text-base md:!text-lg !px-10 !py-4" @click="goToPaywall">Продолжить &rarr;</button>
+              <button class="btn-3d w-full !text-base !py-4" @click="goToPaywall">Продолжить &rarr;</button>
               <p class="text-xs text-custom-input-text mt-3">Без обязательств, отмени в любой момент</p>
             </div>
           </div>
@@ -745,8 +745,7 @@
 
         <!-- ========== SCREEN 14: PAYWALL ========== -->
         <div v-else-if="currentStep === 'paywall'" key="paywall" class="step-content">
-          <div class="min-h-screen flex flex-col items-center justify-start px-4 py-8 md:py-16">
-            <div class="w-full max-w-lg">
+          <div class="max-w-md mx-auto px-5 py-8">
 
               <h2 ref="pwTitle" class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2 opacity-0">
                 Твой план подготовки к {{ answers.targetScore || 1300 }}+ готов
@@ -807,21 +806,19 @@
                 <button class="bg-custom-main text-white font-bold text-sm px-5 rounded-xl">OK</button>
               </div>
 
-              <div ref="pwCta" class="opacity-0">
-                <button class="btn-3d w-full !text-base md:!text-lg !py-4 mt-5" @click="goToPlatform">Продолжить &rarr;</button>
-                <p class="text-center text-xs text-custom-input-text mt-2">Безопасная оплата через Polar.sh</p>
-                <p class="text-center mt-4">
-                  <a href="https://qos.plus/login" class="text-sm text-custom-main font-medium hover:underline">Уже оплатил?</a>
-                </p>
-              </div>
-
+            <div ref="pwCta" class="opacity-0">
+              <button class="btn-3d w-full !text-base !py-4 mt-5" @click="goToPlatform">Продолжить &rarr;</button>
+              <p class="text-center text-xs text-custom-input-text mt-2">Безопасная оплата через Polar.sh</p>
+              <p class="text-center mt-4">
+                <a href="https://qos.plus/login" class="text-sm text-custom-main font-medium hover:underline">Уже оплатил?</a>
+              </p>
             </div>
 
             <!-- Transaction Abandonment overlay -->
             <Transition name="toast">
               <div v-if="showAbandonment" class="fixed inset-0 z-50 flex items-end justify-center" @click.self="dismissAbandonment">
                 <div class="absolute inset-0 bg-black/40"></div>
-                <div class="relative bg-white rounded-t-3xl w-full max-w-lg p-6 pb-8 shadow-2xl">
+                <div class="relative bg-white rounded-t-3xl w-full max-w-md p-6 pb-8 shadow-2xl">
                   <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5"></div>
                   <h3 class="text-xl font-extrabold text-center mb-1">Подожди! 🎁</h3>
                   <p class="text-sm text-custom-input-text text-center mb-5">Специальное предложение — только сейчас</p>
