@@ -612,7 +612,7 @@
             <div ref="featHero" class="rounded-2xl p-5 mb-3 opacity-0"
                  style="background: linear-gradient(145deg, #0A1028, #082CAE); color: white;">
               <div class="text-xs uppercase tracking-widest text-custom-input font-bold mb-2">⭐ Главное для тебя</div>
-              <h3 class="text-lg font-bold mb-2">{{ heroFeature.title }}</h3>
+              <h3 class="text-lg font-bold mb-2"><span class="mr-1">{{ heroFeature.icon }}</span>{{ heroFeature.title }}</h3>
               <p class="text-sm text-white/70 leading-relaxed mb-3">{{ heroFeature.desc }}</p>
               <span class="inline-block bg-white/15 text-custom-gold text-xs font-semibold px-3 py-1.5 rounded-full">
                 {{ heroFeature.stat }}
