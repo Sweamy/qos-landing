@@ -188,7 +188,7 @@
               <button
                 v-for="(option, i) in targetOptions"
                 :key="option.value"
-                class="target-card opacity-0"
+                class="target-card w-full opacity-0"
                 :class="answers.targetScore === option.value ? 'target-card-selected' : ''"
                 :data-index="i"
                 @click="selectTarget(option.value)"
