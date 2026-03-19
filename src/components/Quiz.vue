@@ -184,7 +184,7 @@
               Выбери цель — мы построим маршрут
             </p>
 
-            <div ref="targetCards" class="grid grid-cols-1 sm:grid-cols-2 gap-3 md:gap-4">
+            <div ref="targetCards" class="space-y-3">
               <button
                 v-for="(option, i) in targetOptions"
                 :key="option.value"
@@ -274,7 +274,7 @@
               <span class="text-xs text-gray-400 font-medium">Можно несколько</span>
             </div>
 
-            <div ref="painCards" class="grid grid-cols-2 gap-2 md:gap-3">
+            <div ref="painCards" class="space-y-2">
               <button
                 v-for="(option, i) in painOptions"
                 :key="option.value"
@@ -620,12 +620,14 @@
             </div>
 
             <!-- Secondary features grid -->
-            <div ref="featGrid" class="grid grid-cols-2 gap-2 mb-6">
+            <div ref="featGrid" class="space-y-2 mb-6">
               <div v-for="feat in secondaryFeatures" :key="feat.key"
-                   class="bg-custom-input-fill rounded-2xl p-4 opacity-0">
-                <span class="text-2xl mb-1 block">{{ feat.icon }}</span>
-                <h4 class="font-bold text-sm text-gray-900 mb-0.5">{{ feat.title }}</h4>
-                <p class="text-xs text-custom-input-text">{{ feat.desc }}</p>
+                   class="bg-custom-input-fill rounded-2xl p-4 flex items-center gap-3 opacity-0">
+                <span class="text-2xl flex-shrink-0">{{ feat.icon }}</span>
+                <div>
+                  <h4 class="font-bold text-sm text-gray-900">{{ feat.title }}</h4>
+                  <p class="text-xs text-custom-input-text">{{ feat.desc }}</p>
+                </div>
               </div>
             </div>
 
@@ -657,26 +659,22 @@
             </div>
 
             <!-- Secondary bonuses -->
-            <div ref="bonusGrid" class="grid grid-cols-2 gap-2 mb-4">
-              <div class="border border-gray-100 rounded-2xl p-4 text-center bg-white opacity-0">
-                <span class="text-2xl block mb-1">🃏</span>
-                <h4 class="font-bold text-sm">Flashcards</h4>
-                <p class="text-xs text-custom-input-text">2,000+ SAT-слов</p>
+            <div ref="bonusGrid" class="space-y-2 mb-4">
+              <div class="border border-gray-100 rounded-2xl p-4 flex items-center gap-3 bg-white opacity-0">
+                <span class="text-2xl flex-shrink-0">🃏</span>
+                <div><h4 class="font-bold text-sm">Flashcards</h4><p class="text-xs text-custom-input-text">2,000+ SAT-слов</p></div>
               </div>
-              <div class="border border-gray-100 rounded-2xl p-4 text-center bg-white opacity-0">
-                <span class="text-2xl block mb-1">📋</span>
-                <h4 class="font-bold text-sm">Practice Tests</h4>
-                <p class="text-xs text-custom-input-text">Полные пробники SAT</p>
+              <div class="border border-gray-100 rounded-2xl p-4 flex items-center gap-3 bg-white opacity-0">
+                <span class="text-2xl flex-shrink-0">📋</span>
+                <div><h4 class="font-bold text-sm">Practice Tests</h4><p class="text-xs text-custom-input-text">Полные пробники SAT</p></div>
               </div>
-              <div class="border border-gray-100 rounded-2xl p-4 text-center bg-white opacity-0">
-                <span class="text-2xl block mb-1">🎯</span>
-                <h4 class="font-bold text-sm">Личный план</h4>
-                <p class="text-xs text-custom-input-text">Под твой уровень и цель</p>
+              <div class="border border-gray-100 rounded-2xl p-4 flex items-center gap-3 bg-white opacity-0">
+                <span class="text-2xl flex-shrink-0">🎯</span>
+                <div><h4 class="font-bold text-sm">Личный план</h4><p class="text-xs text-custom-input-text">Под твой уровень и цель</p></div>
               </div>
-              <div class="border border-gray-100 rounded-2xl p-4 text-center bg-white opacity-0">
-                <span class="text-2xl block mb-1">🔄</span>
-                <h4 class="font-bold text-sm">Рефлексия</h4>
-                <p class="text-xs text-custom-input-text">Анализ после занятий</p>
+              <div class="border border-gray-100 rounded-2xl p-4 flex items-center gap-3 bg-white opacity-0">
+                <span class="text-2xl flex-shrink-0">🔄</span>
+                <div><h4 class="font-bold text-sm">Рефлексия</h4><p class="text-xs text-custom-input-text">Анализ после занятий</p></div>
               </div>
             </div>
 
