@@ -743,6 +743,118 @@
           </div>
         </div>
 
+        <!-- ========== SCREEN 14: PAYWALL ========== -->
+        <div v-else-if="currentStep === 'paywall'" key="paywall" class="step-content">
+          <div class="min-h-screen flex flex-col items-center justify-start px-4 py-8 md:py-16">
+            <div class="w-full max-w-lg">
+
+              <h2 ref="pwTitle" class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2 opacity-0">
+                Твой план подготовки к {{ answers.targetScore || 1300 }}+ готов
+              </h2>
+              <p ref="pwSub" class="text-sm font-semibold text-custom-main text-center mb-4 opacity-0">
+                Начни сегодня — увидишь рост через неделю
+              </p>
+
+              <!-- Badges -->
+              <div ref="pwBadges" class="flex justify-center gap-5 mb-3 opacity-0">
+                <div class="flex items-center gap-1">
+                  <span class="text-custom-gold-dark text-lg">{</span>
+                  <div>
+                    <div class="text-sm font-extrabold">2,800+</div>
+                    <div class="text-[10px] text-custom-input-text">учеников</div>
+                  </div>
+                  <span class="text-custom-gold-dark text-lg">}</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <span class="text-custom-gold-dark text-lg">{</span>
+                  <div>
+                    <div class="text-sm font-extrabold">4.9 ★</div>
+                    <div class="text-[10px] text-custom-input-text">оценка</div>
+                  </div>
+                  <span class="text-custom-gold-dark text-lg">}</span>
+                </div>
+              </div>
+
+              <p ref="pwNoCommit" class="text-xs text-custom-input-text text-center mb-5 opacity-0">
+                Без обязательств, отмени в любой момент
+              </p>
+
+              <!-- Plan cards -->
+              <div ref="pwPlans" class="space-y-3 mb-4">
+                <div v-for="plan in subscriptionPlans" :key="plan.id"
+                     class="paywall-plan"
+                     :class="{ 'paywall-plan-selected': selectedPlan === plan.id }"
+                     @click="selectedPlan = plan.id">
+                  <div v-if="plan.badge" class="paywall-plan-badge">{{ plan.badge }}</div>
+                  <div v-if="plan.discount" class="paywall-discount-badge">{{ plan.discount }}</div>
+                  <div class="paywall-radio" :class="{ 'paywall-radio-active': selectedPlan === plan.id }">
+                    <span v-if="selectedPlan === plan.id" class="paywall-radio-dot"></span>
+                  </div>
+                  <div class="flex-1">
+                    <div class="font-bold text-base">{{ plan.label }}</div>
+                    <div class="text-xs text-custom-input-text">{{ plan.perMonth }}</div>
+                  </div>
+                  <div class="text-right">
+                    <div v-if="plan.oldPrice" class="text-xs text-custom-input-text line-through">{{ plan.oldPrice }} ₸</div>
+                    <div class="text-lg font-extrabold">{{ plan.price }} <span class="text-sm font-medium">₸</span></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Promo code -->
+              <div ref="pwPromo" class="flex gap-2 mb-0 opacity-0">
+                <input v-model="promoCode" class="flex-1 border-2 border-custom-inactive rounded-xl px-4 py-3 text-sm outline-none focus:border-custom-main transition-colors" placeholder="Промокод">
+                <button class="bg-custom-main text-white font-bold text-sm px-5 rounded-xl">OK</button>
+              </div>
+
+              <div ref="pwCta" class="opacity-0">
+                <button class="btn-3d w-full !text-base md:!text-lg !py-4 mt-5" @click="goToPlatform">Продолжить &rarr;</button>
+                <p class="text-center text-xs text-custom-input-text mt-2">Безопасная оплата через Polar.sh</p>
+                <p class="text-center mt-4">
+                  <a href="https://qos.plus/login" class="text-sm text-custom-main font-medium hover:underline">Уже оплатил?</a>
+                </p>
+              </div>
+
+            </div>
+
+            <!-- Transaction Abandonment overlay -->
+            <Transition name="toast">
+              <div v-if="showAbandonment" class="fixed inset-0 z-50 flex items-end justify-center" @click.self="dismissAbandonment">
+                <div class="absolute inset-0 bg-black/40"></div>
+                <div class="relative bg-white rounded-t-3xl w-full max-w-lg p-6 pb-8 shadow-2xl">
+                  <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5"></div>
+                  <h3 class="text-xl font-extrabold text-center mb-1">Подожди! 🎁</h3>
+                  <p class="text-sm text-custom-input-text text-center mb-5">Специальное предложение — только сейчас</p>
+
+                  <div class="border-2 border-custom-main bg-custom-blue rounded-2xl p-4 text-center mb-3">
+                    <span class="inline-block bg-custom-correct text-white text-xs font-bold px-3 py-1 rounded-lg mb-2">-30% на год</span>
+                    <div class="text-xs text-custom-input-text line-through">28 000 ₸</div>
+                    <div class="text-2xl font-extrabold text-custom-main">19 600 <span class="text-sm font-medium">₸/год</span></div>
+                    <div class="text-xs text-custom-input-text mt-1">1 633 ₸/мес · экономия 8 400 ₸</div>
+                  </div>
+
+                  <div class="paywall-plan mb-4">
+                    <div class="paywall-radio"></div>
+                    <div class="flex-1">
+                      <div class="font-bold text-base">3 месяца</div>
+                      <div class="text-xs text-custom-input-text">без скидки</div>
+                    </div>
+                    <div class="text-right">
+                      <div class="text-lg font-extrabold">9 800 <span class="text-sm font-medium">₸</span></div>
+                    </div>
+                  </div>
+
+                  <button class="btn-3d w-full !text-base !py-4" @click="goToPlatformWithDiscount">Забрать скидку &rarr;</button>
+                  <p class="text-center text-sm text-custom-main font-medium mt-4 cursor-pointer" @click="goToPlatform">
+                    Нет, спасибо — перейти на платформу
+                  </p>
+                </div>
+              </div>
+            </Transition>
+
+          </div>
+        </div>
+
       </Transition>
     </div>
   </div>
@@ -1036,6 +1148,11 @@ function goNext() {
 
 function goBack() {
   if (isAnimating.value) return
+  // Transaction abandonment on paywall
+  if (currentStep.value === 'paywall') {
+    handlePaywallBack()
+    return
+  }
   isAnimating.value = true
   slideDirection.value = 'backward'
   const prev = getPrevStep(currentStep.value)
@@ -1310,6 +1427,14 @@ const spwReviews = ref(null)
 const spwFooter = ref(null)
 const spwCta = ref(null)
 
+const pwTitle = ref(null)
+const pwSub = ref(null)
+const pwBadges = ref(null)
+const pwNoCommit = ref(null)
+const pwPlans = ref(null)
+const pwPromo = ref(null)
+const pwCta = ref(null)
+
 function animateHook() {
   const tl = gsap.timeline({ defaults: { ease: 'back.out(1.4)', duration: 0.35 } })
   tl.fromTo(hookLogo.value, { opacity: 0, y: -12, scale: 0.9 }, { opacity: 1, y: 0, scale: 1 }, 0)
@@ -1477,6 +1602,24 @@ function animateSocialProofWall() {
   return tl
 }
 
+function animatePaywall() {
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
+  tl.fromTo(pwTitle.value, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 0)
+    .fromTo(pwSub.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.06)
+    .fromTo(pwBadges.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.12)
+    .fromTo(pwNoCommit.value, { opacity: 0 }, { opacity: 1, duration: 0.2 }, 0.18)
+
+  const plans = pwPlans.value.querySelectorAll('.paywall-plan')
+  tl.fromTo(plans,
+    { opacity: 0, y: 12 },
+    { opacity: 1, y: 0, duration: 0.3, stagger: 0.06 },
+    0.22
+  )
+  tl.fromTo(pwPromo.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.45)
+  tl.fromTo(pwCta.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.5)
+  return tl
+}
+
 // Trigger animations AFTER the transition finishes entering
 function onStepEnter() {
   isAnimating.value = true
@@ -1494,6 +1637,7 @@ function onStepEnter() {
     featureShowcase: animateFeatureShowcase,
     bonuses: animateBonuses,
     socialProofWall: animateSocialProofWall,
+    paywall: animatePaywall,
   }
   const fn = animators[currentStep.value]
   if (fn) {
@@ -1526,6 +1670,69 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+/* Paywall plan cards */
+.paywall-plan {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 18px;
+  border: 1.5px solid #EFF1F3;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+}
+.paywall-plan:hover {
+  border-color: #D8E6F4;
+}
+.paywall-plan-selected {
+  border-color: #082CAE;
+  background: #EDF3FA;
+}
+.paywall-plan-badge {
+  position: absolute;
+  top: -11px;
+  left: 18px;
+  background: #082CAE;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 8px;
+}
+.paywall-discount-badge {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: #339114;
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 8px;
+}
+.paywall-radio {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #D8E6F4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+.paywall-radio-active {
+  border-color: #082CAE;
+  background: #082CAE;
+}
+.paywall-radio-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: white;
+}
+
 /* Animated grid background — GPU-composited */
 .quiz-grid-layer {
   position: absolute;
