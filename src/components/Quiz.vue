@@ -645,7 +645,7 @@
 
                 <!-- CTA -->
                 <div class="px-6 pb-6 pt-2">
-                  <button class="btn-3d w-full !text-base md:!text-lg !py-4" @click="goToPrePaywall">
+                  <button class="btn-3d w-full !text-base md:!text-lg !py-4" @click="goToFeatureShowcase">
                     Начать подготовку &rarr;
                   </button>
                   <p class="text-center text-xs text-gray-400 mt-3">Бесплатно &middot; Без обязательств</p>
@@ -706,25 +706,26 @@ const STEPS = [
   'experience',
   'currentScore',  // conditional — only for "took"
   'targetScore',
-  'socialProof',
   'deadline',
   'pains',
   'dailyTime',
   'anchor',
   'loader',
   'result',
-  'prePaywall',
+  'featureShowcase',
+  'bonuses',
+  'socialProofWall',
+  'paywall',
 ]
 
 // Steps that skip the header + progress bar
-const NO_HEADER_STEPS = ['hook', 'loader', 'result', 'prePaywall']
+const NO_HEADER_STEPS = ['hook', 'loader', 'result', 'featureShowcase', 'bonuses', 'socialProofWall', 'paywall']
 
 // Progress % mapped per step (excluding hook)
 const PROGRESS_MAP = {
   experience: 15,
   currentScore: 20,
   targetScore: 30,
-  socialProof: 35,
   deadline: 45,
   pains: 60,
   dailyTime: 75,
@@ -749,6 +750,11 @@ const answers = reactive({
   prioritySection: null,  // from loader interruption
 })
 
+const hasSeenAbandonment = ref(false)
+const showAbandonment = ref(false)
+const selectedPlan = ref('quarterly')
+const promoCode = ref('')
+
 // ==================== COMPUTED ====================
 
 const showHeader = computed(() => !NO_HEADER_STEPS.includes(currentStep.value))
@@ -761,7 +767,7 @@ const transitionName = computed(() =>
 
 const quizContainer = ref(null)
 
-const NO_BACK_STEPS = ['hook', 'experience', 'loader', 'result', 'prePaywall']
+const NO_BACK_STEPS = ['hook', 'experience', 'loader', 'result', 'featureShowcase', 'bonuses', 'socialProofWall', 'paywall']
 
 const canGoBack = computed(() => {
   if (NO_BACK_STEPS.includes(currentStep.value)) return false
@@ -1095,11 +1101,50 @@ function answerInterrupt(value) {
   loaderTween = tl
 }
 
-function goToPrePaywall() {
+function goToFeatureShowcase() {
   if (isAnimating.value) return
   isAnimating.value = true
   slideDirection.value = 'forward'
-  currentStep.value = 'prePaywall'
+  currentStep.value = 'featureShowcase'
+}
+
+function goToBonuses() {
+  if (isAnimating.value) return
+  isAnimating.value = true
+  slideDirection.value = 'forward'
+  currentStep.value = 'bonuses'
+}
+
+function goToSocialProofWall() {
+  if (isAnimating.value) return
+  isAnimating.value = true
+  slideDirection.value = 'forward'
+  currentStep.value = 'socialProofWall'
+}
+
+function goToPaywall() {
+  if (isAnimating.value) return
+  isAnimating.value = true
+  slideDirection.value = 'forward'
+  currentStep.value = 'paywall'
+}
+
+function handlePaywallBack() {
+  if (!hasSeenAbandonment.value) {
+    hasSeenAbandonment.value = true
+    showAbandonment.value = true
+  } else {
+    slideDirection.value = 'backward'
+    currentStep.value = 'socialProofWall'
+  }
+}
+
+function dismissAbandonment() {
+  showAbandonment.value = false
+}
+
+function goToPlatformWithDiscount() {
+  window.location.href = 'https://qos.plus/lms/practice/sat'
 }
 
 function goToPlatform() {
