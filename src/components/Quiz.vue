@@ -223,63 +223,6 @@
           </div>
         </div>
 
-        <!-- ========== SCREEN 4: SOCIAL PROOF BREAK ========== -->
-        <div v-else-if="currentStep === 'socialProof'" key="socialProof" class="step-content flex items-center justify-center">
-          <div class="max-w-lg mx-auto px-6 py-12 md:py-20 text-center">
-            <h2 ref="proofTitle" class="text-2xl md:text-3xl font-bold text-gray-900 mb-10 opacity-0">
-              Ты не первый с такой целью
-            </h2>
-
-            <!-- Animated counters -->
-            <div ref="proofCounters" class="space-y-6 mb-10">
-              <div class="proof-stat opacity-0">
-                <div class="flex items-center justify-center gap-3">
-                  <span class="text-2xl">&#x1F4C8;</span>
-                  <span class="text-4xl md:text-5xl font-bold text-custom-main tabular-nums">
-                    <span ref="counter89">0</span>%
-                  </span>
-                </div>
-                <p class="text-sm text-gray-500 mt-1">учеников достигают целевого балла</p>
-              </div>
-
-              <div class="proof-stat opacity-0">
-                <div class="flex items-center justify-center gap-3">
-                  <span class="text-2xl">&#x23F1;</span>
-                  <span class="text-4xl md:text-5xl font-bold text-custom-main tabular-nums">
-                    +<span ref="counter150">0</span>
-                  </span>
-                </div>
-                <p class="text-sm text-gray-500 mt-1">баллов — средний рост за 8 недель</p>
-              </div>
-
-              <div class="proof-stat opacity-0">
-                <div class="flex items-center justify-center gap-3">
-                  <span class="text-amber-400 text-2xl">&#9733;</span>
-                  <span class="text-4xl md:text-5xl font-bold text-custom-main tabular-nums">
-                    <span ref="counter49">0</span>
-                  </span>
-                </div>
-                <p class="text-sm text-gray-500 mt-1">средняя оценка платформы</p>
-              </div>
-            </div>
-
-            <!-- Mini review -->
-            <div ref="proofReview" class="bg-white rounded-2xl px-6 py-5 shadow-sm border border-gray-100 text-left mb-10 opacity-0">
-              <div class="flex gap-0.5 mb-2">
-                <span v-for="n in 5" :key="n" class="text-amber-400 text-sm">&#9733;</span>
-              </div>
-              <p class="text-gray-700 text-sm md:text-base italic">
-                &laquo;1180 &rarr; 1420 за 2.5 месяца. Я думал так не бывает&raquo;
-              </p>
-              <p class="text-xs text-gray-400 mt-2">Алихан, Алматы</p>
-            </div>
-
-            <div ref="proofCta" class="opacity-0">
-              <button class="quiz-next-btn" @click="goNext">Продолжить</button>
-            </div>
-          </div>
-        </div>
-
         <!-- ========== SCREEN 5: DEADLINE ========== -->
         <div v-else-if="currentStep === 'deadline'" key="deadline" class="step-content">
           <div class="max-w-2xl mx-auto px-4 py-5 md:py-16">
@@ -655,34 +598,6 @@
           </div>
         </div>
 
-        <!-- ========== SCREEN 11: PRE-PAYWALL ========== -->
-        <div v-else-if="currentStep === 'prePaywall'" key="prePaywall" class="step-content">
-          <div class="min-h-screen flex flex-col items-center justify-center px-4 py-12 md:py-20">
-            <h2 ref="prePayTitle" class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3 opacity-0">
-              Все, что нужно для {{ answers.targetScore }}+
-            </h2>
-            <p ref="prePaySub" class="text-gray-500 text-center mb-10 opacity-0">
-              Платформа полного цикла подготовки
-            </p>
-
-            <div ref="prePayCards" class="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-lg w-full mb-10">
-              <div
-                v-for="(feat, i) in prePayFeatures"
-                :key="feat.title"
-                class="bg-white rounded-2xl p-5 border border-gray-100 shadow-sm opacity-0"
-              >
-                <span class="text-3xl mb-3 block">{{ feat.icon }}</span>
-                <h3 class="font-bold text-gray-900 text-base mb-1">{{ feat.title }}</h3>
-                <p class="text-sm text-gray-500 leading-relaxed">{{ feat.desc }}</p>
-              </div>
-            </div>
-
-            <div ref="prePayCta" class="opacity-0">
-              <button class="btn-3d !text-base md:!text-lg !px-10 !py-4" @click="goToPlatform">Начать подготовку &rarr;</button>
-            </div>
-          </div>
-        </div>
-
 
       </Transition>
     </div>
@@ -870,13 +785,6 @@ const planFeatures = [
   'Ежедневные задания под твои слабые места',
   'Адаптивные пробные тесты',
   'Мгновенный разбор каждой ошибки',
-]
-
-const prePayFeatures = [
-  { icon: '\u{1F9E0}', title: 'Умный план', desc: 'Адаптируется под твой прогресс каждый день' },
-  { icon: '\u{1F4DD}', title: 'Безлимитные пробники', desc: 'Reading, Writing, Math — с разбором каждого ответа' },
-  { icon: '\u{1F916}', title: 'AI-анализ ошибок', desc: 'Находит паттерны и дает точечные рекомендации' },
-  { icon: '\u{1F4CA}', title: 'Трекер прогресса', desc: 'Видишь свой рост в реальном времени' },
 ]
 
 // Feature Showcase: hero feature selected by user's primary pain
@@ -1224,13 +1132,6 @@ const scoreDisplay = ref(null)
 const scoreSlider = ref(null)
 const scoreCta = ref(null)
 const targetCards = ref(null)
-const proofTitle = ref(null)
-const proofCounters = ref(null)
-const proofReview = ref(null)
-const proofCta = ref(null)
-const counter89 = ref(null)
-const counter150 = ref(null)
-const counter49 = ref(null)
 const deadlineCards = ref(null)
 const painCards = ref(null)
 const timeCards = ref(null)
@@ -1244,10 +1145,6 @@ const loaderChecklist = ref(null)
 const loaderReviews = ref(null)
 const resultHeader = ref(null)
 const resultCard = ref(null)
-const prePayTitle = ref(null)
-const prePaySub = ref(null)
-const prePayCards = ref(null)
-const prePayCta = ref(null)
 
 function animateHook() {
   const tl = gsap.timeline({ defaults: { ease: 'back.out(1.4)', duration: 0.35 } })
@@ -1284,48 +1181,6 @@ function animateTargetScore() {
     { opacity: 0, y: 18 },
     { opacity: 1, y: 0, duration: 0.3, stagger: 0.05, ease: 'power3.out' }
   )
-}
-
-function animateSocialProof() {
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-  tl.fromTo(proofTitle.value, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.3 }, 0)
-
-  const stats = proofCounters.value.querySelectorAll('.proof-stat')
-  tl.fromTo(stats,
-    { opacity: 0, y: 16 },
-    { opacity: 1, y: 0, duration: 0.3, stagger: 0.08 },
-    0.1
-  )
-
-  const counterObj89 = { val: 0 }
-  tl.to(counterObj89, {
-    val: 89, duration: 1, ease: 'power2.out',
-    onUpdate: () => { if (counter89.value) counter89.value.textContent = Math.round(counterObj89.val) }
-  }, 0.15)
-
-  const counterObj150 = { val: 0 }
-  tl.to(counterObj150, {
-    val: 150, duration: 1, ease: 'power2.out',
-    onUpdate: () => { if (counter150.value) counter150.value.textContent = Math.round(counterObj150.val) }
-  }, 0.23)
-
-  const counterObj49 = { val: 0 }
-  tl.to(counterObj49, {
-    val: 4.9, duration: 1, ease: 'power2.out',
-    onUpdate: () => { if (counter49.value) counter49.value.textContent = counterObj49.val.toFixed(1) }
-  }, 0.31)
-
-  tl.fromTo(proofReview.value,
-    { opacity: 0, y: 12 },
-    { opacity: 1, y: 0, duration: 0.3 },
-    0.5
-  )
-  tl.fromTo(proofCta.value,
-    { opacity: 0, y: 8 },
-    { opacity: 1, y: 0, duration: 0.25 },
-    0.65
-  )
-  return tl
 }
 
 function animateDeadline() {
@@ -1391,21 +1246,6 @@ function animateResult() {
   return tl
 }
 
-function animatePrePaywall() {
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } })
-  tl.fromTo(prePayTitle.value, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3 }, 0)
-    .fromTo(prePaySub.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.06)
-
-  const cards = prePayCards.value.querySelectorAll('[class*="bg-white"]')
-  tl.fromTo(cards,
-    { opacity: 0, y: 16 },
-    { opacity: 1, y: 0, duration: 0.3, stagger: 0.06 },
-    0.12
-  )
-  tl.fromTo(prePayCta.value, { opacity: 0, y: 8 }, { opacity: 1, y: 0, duration: 0.25 }, 0.4)
-  return tl
-}
-
 
 // Trigger animations AFTER the transition finishes entering
 function onStepEnter() {
@@ -1415,14 +1255,12 @@ function onStepEnter() {
     experience: animateExperience,
     currentScore: animateCurrentScore,
     targetScore: animateTargetScore,
-    socialProof: animateSocialProof,
     deadline: animateDeadline,
     pains: animatePains,
     dailyTime: animateTime,
     anchor: animateAnchor,
     loader: animateLoader,
     result: animateResult,
-    prePaywall: animatePrePaywall,
   }
   const fn = animators[currentStep.value]
   if (fn) {
