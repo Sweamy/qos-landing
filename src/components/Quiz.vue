@@ -281,7 +281,7 @@
               <button
                 v-for="(option, i) in painOptions"
                 :key="option.value"
-                class="pain-card text-left opacity-0"
+                class="pain-card w-full text-left opacity-0"
                 :class="answers.pains.includes(option.value) ? 'pain-card-selected' : ''"
                 @click="togglePain(option.value)"
               >
@@ -1782,10 +1782,10 @@ onUnmounted(() => {
 
 /* Next button */
 .quiz-next-btn {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
-  min-width: 200px;
+  width: 100%;
   padding: 14px 40px;
   background: #082CAE;
   color: white;
