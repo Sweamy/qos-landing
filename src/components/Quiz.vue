@@ -58,8 +58,8 @@
       <Transition :name="transitionName" mode="out-in" @after-enter="onStepEnter">
 
         <!-- ========== SCREEN 1: HOOK ========== -->
-        <div v-if="currentStep === 'hook'" key="hook" class="step-content flex items-center justify-center">
-          <div class="max-w-md mx-auto px-5 py-8 text-center">
+        <div v-if="currentStep === 'hook'" key="hook" class="step-content">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-dvh flex flex-col text-center">
             <!-- Logo -->
             <div ref="hookLogo" class="mb-8 opacity-0">
               <svg class="h-14 md:h-16 w-auto text-custom-main mx-auto" viewBox="0 0 1500 1500" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M391.754 557.633c82.43.261 143.808 36.273 184.14 108.043 28.786-56.344 74.29-91 136.504-103.977 77.79-12.02 141.88 12.183 192.27 72.61 6.875 10.261 13.457 20.714 19.75 31.366 34.738-65.91 89.536-101.73 164.387-107.461 85.488-.101 147.836 37.852 187.043 113.852-41.02 1.871-82.067 2.258-123.145 1.16-35.058-20.398-70.297-20.785-105.718-1.16-12.395 7.746-22.462 17.812-30.208 30.207 89.844.191 179.687.773 269.527 1.742 17.453 79.098-3.847 145.512-63.898 199.238-56.746 43.54-119.481 54.77-188.203 33.692-48.887-18.106-85.676-50.055-110.368-95.844-43.152 75.8-108.597 110.848-196.336 105.137-68.418-9.801-119.148-44.844-152.188-105.137-8.578 15.77-19.035 30.293-31.367 43.566 21.105 21.106 42.211 42.208 63.316 63.313.797.969.606 1.742-.582 2.324-40.504-1.547-80.969-1.547-121.402 0-5.051-5.246-10.281-10.281-15.684-15.101-67.082 22.586-129.43 13.484-187.043-27.301-65.243-54.774-88.286-123.899-69.125-207.375 20.406-67.262 63.972-112.988 130.699-135.18 15.812-4.183 31.691-7.086 47.629-8.715zM389.434 657.543c52.273-1.863 86.93 21.758 103.976 70.867 9.055 47.25-6.629 83.457-47.05 108.625-46.934 20.664-87.403 11.953-121.403-26.14-25.559-38.711-25.559-77.434 0-116.176 16.945-20.375 38.437-32.77 64.477-37.176zm348.523 0c52.274-1.863 86.93 21.758 103.977 70.867 9.058 47.25-6.625 83.457-47.051 108.625-46.933 20.664-87.398 11.953-121.402-26.14-25.559-38.711-25.559-77.434 0-116.176 16.945-20.375 38.441-32.77 64.476-37.176zm199.82 145.219c80.551-.192 161.098 0 241.645.582-32.243 43.394-73.68 55.015-124.309 34.851-5.226-2.805-10.261-5.903-15.101-9.293-37.2.18-74.375.18-111.527 0 4.133-8.336 7.231-17.051 9.293-26.14z"/></svg>
@@ -89,7 +89,7 @@
             </div>
 
             <!-- CTA -->
-            <div ref="hookCta" class="opacity-0">
+            <div ref="hookCta" class="mt-auto pt-6 opacity-0">
               <button class="btn-3d !text-base md:!text-lg !px-10 !py-4" @click="startQuiz">
                 Получить мой план &rarr;
               </button>
@@ -107,7 +107,7 @@
 
         <!-- ========== SCREEN 2: EXPERIENCE ========== -->
         <div v-else-if="currentStep === 'experience'" key="experience" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-[calc(100dvh-56px)] flex flex-col">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3">
               Какой у тебя опыт с SAT?
             </h2>
@@ -136,7 +136,7 @@
 
         <!-- ========== SCREEN 2.1: CURRENT SCORE ========== -->
         <div v-else-if="currentStep === 'currentScore'" key="currentScore" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-[calc(100dvh-56px)] flex flex-col">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3">
               Какой балл был в последний раз?
             </h2>
@@ -168,7 +168,7 @@
               </div>
             </div>
 
-            <div ref="scoreCta" class="mt-10 flex justify-center opacity-0">
+            <div ref="scoreCta" class="mt-auto pt-6 flex justify-center opacity-0">
               <button class="quiz-next-btn" @click="goNext">Далее</button>
             </div>
           </div>
@@ -176,7 +176,7 @@
 
         <!-- ========== SCREEN 3: TARGET SCORE ========== -->
         <div v-else-if="currentStep === 'targetScore'" key="targetScore" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-[calc(100dvh-56px)] flex flex-col">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3">
               Какой балл хочешь получить?
             </h2>
@@ -212,7 +212,7 @@
               </div>
             </Transition>
 
-            <div class="mt-8 flex justify-center">
+            <div class="mt-auto pt-6 flex justify-center">
               <button
                 class="quiz-next-btn"
                 :class="!answers.targetScore ? 'opacity-40 cursor-not-allowed' : ''"
@@ -225,7 +225,7 @@
 
         <!-- ========== SCREEN 5: DEADLINE ========== -->
         <div v-else-if="currentStep === 'deadline'" key="deadline" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-[calc(100dvh-56px)] flex flex-col">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-8 md:mb-10">
               Когда планируешь сдавать?
             </h2>
@@ -252,7 +252,7 @@
 
         <!-- ========== SCREEN 6: PAIN POINTS ========== -->
         <div v-else-if="currentStep === 'pains'" key="pains" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-[calc(100dvh-56px)] flex flex-col">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3">
               Что мешает больше всего?
             </h2>
@@ -298,7 +298,7 @@
               </p>
             </Transition>
 
-            <div class="mt-6 flex justify-center">
+            <div class="mt-auto pt-6 flex justify-center">
               <button
                 class="quiz-next-btn"
                 :disabled="answers.pains.length === 0"
@@ -310,7 +310,7 @@
 
         <!-- ========== SCREEN 7: TIME PER DAY ========== -->
         <div v-else-if="currentStep === 'dailyTime'" key="dailyTime" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-[calc(100dvh-56px)] flex flex-col">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3">
               Сколько времени в день готов заниматься?
             </h2>
@@ -342,7 +342,7 @@
 
         <!-- ========== SCREEN 8: EMOTIONAL ANCHOR ========== -->
         <div v-else-if="currentStep === 'anchor'" key="anchor" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-[calc(100dvh-56px)] flex flex-col">
             <h2 class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-3">
               Что для тебя изменится с высоким баллом?
             </h2>
@@ -600,7 +600,7 @@
 
         <!-- ========== SCREEN 11: FEATURE SHOWCASE ========== -->
         <div v-else-if="currentStep === 'featureShowcase'" key="featureShowcase" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-dvh flex flex-col">
             <h2 ref="featTitle" class="text-2xl font-bold text-gray-900 text-center mb-2 opacity-0">
               Вот что тебя ждёт внутри
             </h2>
@@ -629,7 +629,7 @@
               </div>
             </div>
 
-            <div ref="featCta" class="opacity-0">
+            <div ref="featCta" class="mt-auto pt-6 opacity-0">
               <button class="btn-3d w-full !text-base !py-4" @click="goToBonuses">Продолжить &rarr;</button>
             </div>
           </div>
@@ -637,7 +637,7 @@
 
         <!-- ========== SCREEN 12: BONUSES ========== -->
         <div v-else-if="currentStep === 'bonuses'" key="bonuses" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-dvh flex flex-col">
             <h2 ref="bonusTitle" class="text-2xl font-bold text-gray-900 text-center mb-2 opacity-0">
               А ещё ты получишь
             </h2>
@@ -684,7 +684,7 @@
               Ценность бонусов: <strong class="text-gray-900">~50 000 ₸</strong>
             </p>
 
-            <div ref="bonusCta" class="opacity-0">
+            <div ref="bonusCta" class="mt-auto pt-6 opacity-0">
               <button class="btn-3d w-full !text-base !py-4" @click="goToSocialProofWall">Продолжить &rarr;</button>
             </div>
           </div>
@@ -692,7 +692,7 @@
 
         <!-- ========== SCREEN 13: SOCIAL PROOF WALL ========== -->
         <div v-else-if="currentStep === 'socialProofWall'" key="socialProofWall" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-dvh flex flex-col">
             <h2 ref="spwTitle" class="text-2xl font-bold text-gray-900 text-center mb-6 opacity-0">
               Они уже это сделали
             </h2>
@@ -736,7 +736,7 @@
               <span class="text-sm font-semibold text-custom-main">2,800+ учеников уже на платформе</span>
             </div>
 
-            <div ref="spwCta" class="text-center opacity-0">
+            <div ref="spwCta" class="mt-auto pt-6 text-center opacity-0">
               <button class="btn-3d w-full !text-base !py-4" @click="goToPaywall">Продолжить &rarr;</button>
               <p class="text-xs text-custom-input-text mt-3">Без обязательств, отмени в любой момент</p>
             </div>
@@ -745,7 +745,7 @@
 
         <!-- ========== SCREEN 14: PAYWALL ========== -->
         <div v-else-if="currentStep === 'paywall'" key="paywall" class="step-content">
-          <div class="max-w-md mx-auto px-5 py-8">
+          <div class="max-w-md mx-auto px-5 py-8 min-h-dvh flex flex-col">
 
               <h2 ref="pwTitle" class="text-2xl md:text-3xl font-bold text-gray-900 text-center mb-2 opacity-0">
                 Твой план подготовки к {{ answers.targetScore || 1300 }}+ готов
@@ -806,8 +806,8 @@
                 <button class="bg-custom-main text-white font-bold text-sm px-5 rounded-xl">OK</button>
               </div>
 
-            <div ref="pwCta" class="opacity-0">
-              <button class="btn-3d w-full !text-base !py-4 mt-5" @click="goToPlatform">Продолжить &rarr;</button>
+            <div ref="pwCta" class="mt-auto pt-6 opacity-0">
+              <button class="btn-3d w-full !text-base !py-4" @click="goToPlatform">Продолжить &rarr;</button>
               <p class="text-center text-xs text-custom-input-text mt-2">Безопасная оплата через Polar.sh</p>
               <p class="text-center mt-4">
                 <a href="https://qos.plus/login" class="text-sm text-custom-main font-medium hover:underline">Уже оплатил?</a>
