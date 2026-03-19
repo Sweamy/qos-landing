@@ -879,6 +879,28 @@ const prePayFeatures = [
   { icon: '\u{1F4CA}', title: 'Трекер прогресса', desc: 'Видишь свой рост в реальном времени' },
 ]
 
+// Feature Showcase: hero feature selected by user's primary pain
+const PAIN_TO_HERO = {
+  math:       { icon: '🧮', title: 'Математический AI-алгоритм', desc: 'Наш собственный алгоритм, обученный на тысячах SAT задач. Видит паттерны твоих ошибок и закрывает пробелы.', stat: 'Средний рост: +120 по Math' },
+  reading:    { icon: '🃏', title: 'Vocabulary Flashcards', desc: '2,000+ SAT-слов с интервальным повторением. Система запоминает, какие слова ты знаешь, и фокусируется на пробелах.', stat: '+85 баллов по Reading за 6 недель' },
+  time:       { icon: '🧠', title: 'Умный план', desc: 'Адаптивный план, который экономит время. Каждый день — только то, что двигает балл вверх.', stat: 'Экономит до 40% времени на подготовку' },
+  strategy:   { icon: '🧠', title: 'Умный план', desc: 'Не знаешь с чего начать? Алгоритм построит маршрут от твоего уровня до цели.', stat: 'Персональный маршрут за 30 секунд' },
+  practice:   { icon: '📝', title: 'Безлимитные Practice Tests', desc: 'Полные пробники SAT с детальным разбором каждого ответа. Практикуйся сколько хочешь.', stat: 'Безлимитный доступ к пробникам' },
+  motivation: { icon: '💬', title: 'Telegram-комьюнити', desc: 'Закрытое сообщество студентов. Эфиры, разборы задач, поддержка менторов — ты не один.', stat: '2,800+ учеников в сообществе' },
+}
+
+const ALL_SECONDARY_FEATURES = [
+  { key: 'tests', icon: '📝', title: 'Безлимитные тесты', desc: 'Reading, Writing, Math' },
+  { key: 'tracker', icon: '📊', title: 'Трекер прогресса', desc: 'Рост в реальном времени' },
+  { key: 'plan', icon: '🧠', title: 'Умный план', desc: 'Адаптируется каждый день' },
+  { key: 'reflection', icon: '🔄', title: 'Рефлексия', desc: 'Анализ после сессий' },
+]
+
+// Map hero titles to secondary keys for deduplication
+const HERO_TO_SECONDARY_KEY = {
+  'Безлимитные Practice Tests': 'tests',
+  'Умный план': 'plan',
+}
 
 const anchorMotivation = computed(() => {
   switch (answers.anchor) {
@@ -905,6 +927,28 @@ const targetMotivation = computed(() => {
     default: return ''
   }
 })
+
+const heroFeature = computed(() => {
+  // Priority order for matching pains
+  const priorityOrder = ['math', 'reading', 'time', 'strategy', 'practice', 'motivation']
+  const match = priorityOrder.find(p => answers.pains.includes(p))
+  return PAIN_TO_HERO[match] || PAIN_TO_HERO['strategy']
+})
+
+const secondaryFeatures = computed(() => {
+  const heroTitle = heroFeature.value.title
+  const excludeKey = HERO_TO_SECONDARY_KEY[heroTitle]
+  if (excludeKey) {
+    return ALL_SECONDARY_FEATURES.filter(f => f.key !== excludeKey)
+  }
+  return ALL_SECONDARY_FEATURES
+})
+
+const subscriptionPlans = [
+  { id: 'monthly', label: '1 месяц', perMonth: '5 800 ₸/мес', price: '5 800', oldPrice: null, badge: null },
+  { id: 'quarterly', label: '3 месяца', perMonth: '3 267 ₸/мес', price: '9 800', oldPrice: '17 400', badge: 'Самый популярный' },
+  { id: 'annual', label: '12 месяцев', perMonth: '2 333 ₸/мес', price: '28 000', oldPrice: '69 600', discount: '-60%' },
+]
 
 // ==================== NAVIGATION ====================
 
