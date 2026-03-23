@@ -221,25 +221,6 @@
               </button>
             </div>
 
-            <!-- Dynamic motivation toast -->
-            <Transition name="toast">
-              <div
-                v-if="answers.targetScore && targetMotivation"
-                class="mt-6 flex items-start gap-3 bg-white rounded-2xl px-5 py-4 shadow-sm border border-custom-main/10"
-              >
-                <span class="text-xl flex-shrink-0 mt-0.5">&#x1F4A1;</span>
-                <p class="text-sm md:text-base text-gray-700">{{ targetMotivation }}</p>
-              </div>
-            </Transition>
-
-            <div class="mt-auto pt-6 flex justify-center">
-              <button
-                class="quiz-next-btn"
-                :class="!answers.targetScore ? 'opacity-40 cursor-not-allowed' : ''"
-                :disabled="!answers.targetScore"
-                @click="goNext"
-              >Далее</button>
-            </div>
           </div>
         </div>
 
@@ -321,6 +302,7 @@
             <div class="mt-auto pt-6 flex justify-center">
               <button
                 class="quiz-next-btn"
+                :class="answers.pains.length === 0 ? 'opacity-40 cursor-not-allowed' : ''"
                 :disabled="answers.pains.length === 0"
                 @click="goNext"
               >Далее</button>
@@ -550,7 +532,7 @@
 
         <!-- ========== SCREEN 10: RESULT ========== -->
         <div v-else-if="currentStep === 'result'" key="result" class="step-content">
-          <div class="px-5 pt-14 pb-8 min-h-dvh flex flex-col">
+          <div class="px-5 pt-14 pb-28 min-h-dvh flex flex-col">
 
             <!-- Header -->
             <div ref="resultHeader" class="text-center mb-5 opacity-0">
@@ -661,14 +643,17 @@
               <p class="text-xs text-gray-500"><span class="font-semibold text-gray-700">2,800+ учеников</span> уже занимаются по плану</p>
             </div>
 
-            <!-- CTA -->
-            <div ref="resultCta" class="mt-auto pt-6 opacity-0">
+
+          </div>
+
+          <!-- Sticky CTA -->
+          <div ref="resultCta" class="fixed bottom-0 left-0 right-0 z-50 opacity-0">
+            <div class="max-w-[480px] mx-auto px-5 pb-6 pt-3 text-center">
               <button class="btn-3d w-full !text-base !py-4" @click="goToFeatureShowcase">
                 Начать подготовку &rarr;
               </button>
-              <p class="text-center text-xs text-gray-400 mt-3">Бесплатно &middot; Без обязательств</p>
+              <p class="text-xs text-gray-400 mt-2">Бесплатно &middot; Без обязательств</p>
             </div>
-
           </div>
         </div>
 
@@ -1143,7 +1128,7 @@ const transitionName = computed(() =>
 
 const quizContainer = ref(null)
 
-const NO_BACK_STEPS = ['hook', 'experience', 'loader', 'emailCapture']
+const NO_BACK_STEPS = ['hook', 'experience', 'loader', 'emailCapture', 'result']
 
 const canGoBack = computed(() => {
   if (NO_BACK_STEPS.includes(currentStep.value)) return false
@@ -1402,6 +1387,11 @@ function selectExperience(value) {
 function selectTarget(value) {
   if (isAnimating.value) return
   answers.targetScore = value
+  isAnimating.value = true
+  setTimeout(() => {
+    slideDirection.value = 'forward'
+    currentStep.value = getNextStep('targetScore')
+  }, 350)
 }
 
 function selectDeadline(option) {
@@ -1412,7 +1402,7 @@ function selectDeadline(option) {
   setTimeout(() => {
     slideDirection.value = 'forward'
     currentStep.value = getNextStep('deadline')
-  }, 400)
+  }, 350)
 }
 
 function togglePain(value) {
