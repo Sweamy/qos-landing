@@ -1049,6 +1049,7 @@ import { useRouter } from 'vue-router'
 import gsap from 'gsap'
 import GridPattern from './ui/GridPattern.vue'
 import LogoCloud from './ui/LogoCloud.vue'
+import { initPostHog, capture, identify } from '../composables/usePostHog'
 
 const router = useRouter()
 
@@ -1340,6 +1341,11 @@ function getPrevStep(from) {
 
 function goNext() {
   if (isAnimating.value) return
+  if (currentStep.value === 'currentScore') {
+    capture('quiz_current_score_set', { current_score: answers.currentScore })
+  } else if (currentStep.value === 'pains') {
+    capture('quiz_pains_selected', { pains: answers.pains, pains_count: answers.pains.length })
+  }
   isAnimating.value = true
   slideDirection.value = 'forward'
   const next = getNextStep(currentStep.value)
@@ -1363,6 +1369,7 @@ function goBack() {
 
 function startQuiz() {
   if (isAnimating.value) return
+  capture('quiz_started')
   isAnimating.value = true
   slideDirection.value = 'forward'
   currentStep.value = 'experience'
@@ -1370,6 +1377,7 @@ function startQuiz() {
 
 function selectExperience(value) {
   if (isAnimating.value) return
+  capture('quiz_experience_selected', { experience: value })
   answers.experience = value
   isAnimating.value = true
   setTimeout(() => {
@@ -1386,6 +1394,7 @@ function selectExperience(value) {
 
 function selectTarget(value) {
   if (isAnimating.value) return
+  capture('quiz_target_selected', { target_score: value })
   answers.targetScore = value
   isAnimating.value = true
   setTimeout(() => {
@@ -1396,6 +1405,7 @@ function selectTarget(value) {
 
 function selectDeadline(option) {
   if (isAnimating.value) return
+  capture('quiz_deadline_selected', { deadline: option.value, deadline_date: option.date })
   answers.deadline = option.value
   answers.deadlineDate = option.date || null
   isAnimating.value = true
@@ -1417,6 +1427,7 @@ function togglePain(value) {
 
 function selectTime(value) {
   if (isAnimating.value) return
+  capture('quiz_daily_time_selected', { daily_time: value })
   answers.dailyTime = value
   isAnimating.value = true
   setTimeout(() => {
@@ -1427,6 +1438,7 @@ function selectTime(value) {
 
 function selectAnchor(value) {
   if (isAnimating.value) return
+  capture('quiz_anchor_selected', { anchor: value })
   answers.anchor = value
   isAnimating.value = true
   setTimeout(() => {
@@ -1486,6 +1498,7 @@ function updateLoaderStatus(pct) {
 }
 
 function answerInterrupt(value) {
+  capture('quiz_priority_section_selected', { priority_section: value })
   answers.prioritySection = value
   loaderInterrupted.value = false
 
@@ -1521,6 +1534,7 @@ function answerInterrupt(value) {
 
 function goToFeatureShowcase() {
   if (isAnimating.value) return
+  capture('quiz_result_cta_clicked')
   isAnimating.value = true
   slideDirection.value = 'forward'
   currentStep.value = 'featureShowcase'
@@ -1528,6 +1542,8 @@ function goToFeatureShowcase() {
 
 function submitEmail() {
   if (isAnimating.value) return
+  capture('quiz_email_submitted', { email: emailAddress.value })
+  identify(emailAddress.value)
   isAnimating.value = true
   slideDirection.value = 'forward'
   currentStep.value = 'result'
@@ -1535,6 +1551,7 @@ function submitEmail() {
 
 function goToSocialProofWall() {
   if (isAnimating.value) return
+  capture('quiz_features_cta_clicked')
   isAnimating.value = true
   slideDirection.value = 'forward'
   currentStep.value = 'socialProofWall'
@@ -1542,6 +1559,7 @@ function goToSocialProofWall() {
 
 function goToQosHub() {
   if (isAnimating.value) return
+  capture('quiz_social_proof_cta_clicked')
   isAnimating.value = true
   slideDirection.value = 'forward'
   currentStep.value = 'qosHub'
@@ -1549,6 +1567,7 @@ function goToQosHub() {
 
 function goToPaywall() {
   if (isAnimating.value) return
+  capture('quiz_hub_cta_clicked')
   isAnimating.value = true
   slideDirection.value = 'forward'
   currentStep.value = 'paywall'
@@ -1556,9 +1575,11 @@ function goToPaywall() {
 
 function handlePaywallBack() {
   if (!hasSeenAbandonment.value) {
+    capture('quiz_paywall_abandonment_shown', { selected_plan: selectedPlan.value })
     hasSeenAbandonment.value = true
     showAbandonment.value = true
   } else {
+    capture('quiz_paywall_abandoned')
     slideDirection.value = 'backward'
     currentStep.value = 'socialProofWall'
   }
@@ -1569,19 +1590,23 @@ function dismissAbandonment() {
 }
 
 function goToPlatformWithDiscount() {
+  capture('quiz_discount_accepted')
   showAbandonment.value = false
   showPaymentMethod.value = true
 }
 
 function goToPlatform() {
+  capture('quiz_paywall_cta_clicked', { selected_plan: selectedPlan.value })
   showPaymentMethod.value = true
 }
 
 function payWithCard() {
+  capture('quiz_payment_initiated', { method: 'card', selected_plan: selectedPlan.value })
   window.location.href = 'https://qos.plus/lms/practice/sat'
 }
 
 function payWithKaspi() {
+  capture('quiz_payment_initiated', { method: 'kaspi', selected_plan: selectedPlan.value })
   window.location.href = 'https://qos.plus/lms/practice/sat'
 }
 
@@ -2026,6 +2051,7 @@ const STEP_ANIMATIONS = {
 
 // Trigger animations AFTER the transition finishes entering
 function onStepEnter() {
+  capture('quiz_step_viewed', { step: currentStep.value })
   isAnimating.value = true
   const fn = STEP_ANIMATIONS[currentStep.value]
   if (fn) {
@@ -2038,6 +2064,12 @@ function onStepEnter() {
     }
   }
 }
+
+// Initialize PostHog on mount
+onMounted(() => {
+  initPostHog()
+  capture('quiz_viewed')
+})
 
 // Initial animation on mount
 onMounted(() => {
