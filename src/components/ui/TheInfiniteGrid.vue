@@ -78,19 +78,8 @@ const handleMouseLeave = () => {
 <style scoped>
 .grid-animated-layer {
   position: absolute;
-  inset: -100px; /* Oversized to prevent clipping during animation */
-  width: calc(100% + 200px);
-  height: calc(100% + 200px);
-  animation: gridMove 15s linear infinite;
-  will-change: transform;
-}
-
-@keyframes gridMove {
-  0% {
-    transform: translate(-40px, -40px);
-  }
-  100% {
-    transform: translate(0px, 0px);
-  }
+  inset: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
