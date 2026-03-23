@@ -928,8 +928,8 @@
                   <div class="text-right flex items-center gap-1.5">
                     <span v-if="plan.discount" class="inline-block bg-emerald-600 text-white text-[11px] font-bold px-2 py-0.5 rounded-md">{{ plan.discount }}</span>
                     <div>
-                      <div v-if="plan.oldPrice" class="text-xs text-gray-400 line-through">{{ plan.oldPrice }} ₸</div>
-                      <div class="text-lg font-extrabold">{{ plan.price }} <span class="text-sm font-medium">₸</span></div>
+                      <div v-if="plan.oldPrice" class="text-xs text-gray-400 line-through">{{ plan.oldPrice }}{{ isKZ ? ' ₸' : '' }}</div>
+                      <div class="text-lg font-extrabold">{{ plan.price }}{{ isKZ ? ' ₸' : '' }}</div>
                     </div>
                   </div>
                 </div>
@@ -972,20 +972,44 @@
                     <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
                   </button>
                   <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5"></div>
-                  <h3 class="text-[20px] font-black text-center mb-1">Способ оплаты</h3>
-                  <p class="text-[14px] text-gray-500 text-center mb-5">Выбери удобный способ</p>
+                  <h3 class="text-[20px] font-black text-center mb-1">{{ isKZ ? 'Способ оплаты' : 'Payment method' }}</h3>
+                  <p class="text-[14px] text-gray-500 text-center mb-4">{{ isKZ ? 'Выбери удобный способ' : 'Choose your preferred method' }}</p>
+
+                  <!-- Email input -->
+                  <div class="mb-3">
+                    <input
+                      v-model="paymentEmail"
+                      type="email"
+                      placeholder="Email"
+                      class="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-custom-main transition-colors"
+                    />
+                  </div>
+
+                  <!-- Phone input for Kaspi -->
+                  <div v-if="isKZ && showKaspiPhoneInput" class="mb-3">
+                    <input
+                      v-model="kaspiPhone"
+                      type="tel"
+                      placeholder="8 700 123 45 67"
+                      maxlength="11"
+                      class="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-custom-main transition-colors"
+                    />
+                  </div>
+
+                  <!-- Error message -->
+                  <p v-if="paymentError" class="text-red-500 text-sm text-center mb-3">{{ paymentError }}</p>
 
                   <div class="space-y-3">
-                    <button @click="payWithCard" class="w-full flex items-center gap-4 bg-white border border-gray-200 border-b-2 border-b-gray-200 rounded-xl px-5 py-4 hover:border-custom-main transition-colors">
+                    <button @click="payWithCard" :disabled="isPaymentLoading" class="w-full flex items-center gap-4 bg-white border border-gray-200 border-b-2 border-b-gray-200 rounded-xl px-5 py-4 hover:border-custom-main transition-colors disabled:opacity-50">
                       <span class="text-2xl">💳</span>
                       <div class="text-left">
-                        <p class="font-bold text-[15px] text-gray-900">Картой</p>
+                        <p class="font-bold text-[15px] text-gray-900">{{ isKZ ? 'Картой' : 'Card' }}</p>
                         <p class="text-[12px] text-gray-400">Visa, Mastercard</p>
                       </div>
                       <svg class="w-5 h-5 text-gray-300 ml-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </button>
 
-                    <button @click="payWithKaspi" class="w-full flex items-center gap-4 bg-white border border-gray-200 border-b-2 border-b-gray-200 rounded-xl px-5 py-4 hover:border-custom-main transition-colors">
+                    <button v-if="isKZ" @click="payWithKaspi" :disabled="isPaymentLoading" class="w-full flex items-center gap-4 bg-white border border-gray-200 border-b-2 border-b-gray-200 rounded-xl px-5 py-4 hover:border-custom-main transition-colors disabled:opacity-50">
                       <img src="/kaspi-logo.svg" alt="Kaspi" class="w-8 h-8 object-contain" />
                       <div class="text-left">
                         <p class="font-bold text-[15px] text-gray-900">Kaspi</p>
@@ -1008,20 +1032,27 @@
                   <p class="text-[14px] text-gray-500 text-center mb-5">Специальное предложение — только сейчас</p>
 
                   <div class="border-2 border-custom-main bg-blue-50 rounded-2xl p-4 text-center mb-3">
-                    <span class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-lg mb-2">-30% на год</span>
-                    <div class="text-xs text-gray-400 line-through">28 000 ₸</div>
-                    <div class="text-2xl font-extrabold text-custom-main">19 600 <span class="text-sm font-medium">₸/год</span></div>
-                    <div class="text-[13px] text-gray-500 mt-1">1 633 ₸/мес · экономия 8 400 ₸</div>
+                    <span class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-lg mb-2">-30%</span>
+                    <template v-if="isKZ">
+                      <div class="text-xs text-gray-400 line-through">28 000 ₸</div>
+                      <div class="text-2xl font-extrabold text-custom-main">19 600 <span class="text-sm font-medium">₸/год</span></div>
+                      <div class="text-[13px] text-gray-500 mt-1">1 633 ₸/мес · экономия 8 400 ₸</div>
+                    </template>
+                    <template v-else>
+                      <div class="text-xs text-gray-400 line-through">$49.99</div>
+                      <div class="text-2xl font-extrabold text-custom-main">$34.99 <span class="text-sm font-medium">/year</span></div>
+                      <div class="text-[13px] text-gray-500 mt-1">$2.92/mo · save $15.00</div>
+                    </template>
                   </div>
 
                   <div class="paywall-plan mb-5">
                     <div class="paywall-radio"></div>
                     <div class="flex-1">
-                      <div class="font-bold text-base">3 месяца</div>
-                      <div class="text-xs text-gray-500">без скидки</div>
+                      <div class="font-bold text-base">{{ isKZ ? '3 месяца' : '3 months' }}</div>
+                      <div class="text-xs text-gray-500">{{ isKZ ? 'без скидки' : 'no discount' }}</div>
                     </div>
                     <div class="text-right">
-                      <div class="text-lg font-extrabold">9 800 <span class="text-sm font-medium">₸</span></div>
+                      <div class="text-lg font-extrabold">{{ isKZ ? '9 800 ₸' : '$14.99' }}</div>
                     </div>
                   </div>
 
@@ -1029,6 +1060,28 @@
                   <p class="text-center text-[14px] text-custom-main font-medium mt-4 cursor-pointer" @click="goToPlatform">
                     Нет, спасибо — перейти на платформу
                   </p>
+                </div>
+              </div>
+            </Transition>
+
+            <!-- Kaspi Confirmation overlay -->
+            <Transition name="toast">
+              <div v-if="showKaspiConfirm" class="fixed inset-0 z-[70] flex items-end sm:items-center justify-center pointer-events-auto">
+                <div class="absolute inset-0 bg-black/40"></div>
+                <div class="relative bg-white rounded-t-3xl sm:rounded-3xl w-full max-w-md p-6 pb-8 shadow-2xl text-center">
+                  <div class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5"></div>
+                  <img src="/kaspi-logo.svg" alt="Kaspi" class="w-16 h-16 mx-auto mb-4" />
+                  <h3 class="text-[22px] font-black mb-2">Подтвердите оплату</h3>
+                  <p class="text-[14px] text-gray-500 mb-6">
+                    Откройте приложение Kaspi и подтвердите платёж
+                  </p>
+                  <div class="flex items-center justify-center gap-2 mb-6">
+                    <div class="w-2 h-2 bg-custom-main rounded-full animate-pulse"></div>
+                    <span class="text-sm text-gray-500">{{ kaspiPollMessage }}</span>
+                  </div>
+                  <button @click="cancelKaspiPolling" class="text-[14px] text-gray-400 hover:text-gray-600 transition-colors">
+                    Отменить
+                  </button>
                 </div>
               </div>
             </Transition>
@@ -1116,6 +1169,19 @@ const selectedPlan = ref('quarterly')
 const promoCode = ref('')
 const showPromoInput = ref(false)
 const showPaymentMethod = ref(false)
+
+// ==================== PAYMENT STATE ====================
+const visitorCountry = ref(sessionStorage.getItem('visitor_country') || null)
+const discountApplied = ref(false)
+const isPaymentLoading = ref(false)
+const paymentError = ref('')
+const kaspiPhone = ref('')
+const kaspiToken = ref(null)
+const showKaspiConfirm = ref(false)
+const showKaspiPhoneInput = ref(false)
+const paymentEmail = ref('')
+let kaspiPollInterval = null
+const kaspiPollMessage = ref('Ожидание подтверждения...')
 
 // ==================== COMPUTED ====================
 
@@ -1309,11 +1375,37 @@ const secondaryFeatures = computed(() => {
   return ALL_SECONDARY_FEATURES
 })
 
-const subscriptionPlans = [
-  { id: 'annual', label: '12 месяцев', perMonth: '2 333 ₸/мес', price: '28 000', oldPrice: '69 600', discount: '-60%' },
-  { id: 'quarterly', label: '3 месяца', perMonth: '3 267 ₸/мес', price: '9 800', oldPrice: '17 400', badge: 'Самый популярный' },
-  { id: 'monthly', label: '1 месяц', perMonth: '5 800 ₸/мес', price: '5 800', oldPrice: null, badge: null },
-]
+const isKZ = computed(() => visitorCountry.value === 'KZ')
+
+const subscriptionPlans = computed(() => {
+  if (isKZ.value) {
+    if (discountApplied.value) {
+      return [
+        { id: 'yearly', label: '12 месяцев', perMonth: '1 633 ₸/мес', price: '19 600', oldPrice: '28 000', discount: '-30%', rawPrice: 19600 },
+        { id: 'quarterly', label: '3 месяца', perMonth: '2 287 ₸/мес', price: '6 860', oldPrice: '9 800', discount: '-30%', rawPrice: 6860 },
+        { id: 'monthly', label: '1 месяц', perMonth: '4 060 ₸/мес', price: '4 060', oldPrice: '5 800', discount: '-30%', rawPrice: 4060 },
+      ]
+    }
+    return [
+      { id: 'yearly', label: '12 месяцев', perMonth: '2 333 ₸/мес', price: '28 000', oldPrice: '69 600', discount: '-60%', rawPrice: 28000 },
+      { id: 'quarterly', label: '3 месяца', perMonth: '3 267 ₸/мес', price: '9 800', oldPrice: '17 400', badge: 'Самый популярный', rawPrice: 9800 },
+      { id: 'monthly', label: '1 месяц', perMonth: '5 800 ₸/мес', price: '5 800', oldPrice: null, rawPrice: 5800 },
+    ]
+  }
+  // USD pricing for non-KZ
+  if (discountApplied.value) {
+    return [
+      { id: 'yearly', label: '12 months', perMonth: '$2.92/mo', price: '$34.99', oldPrice: '$49.99', discount: '-30%', rawPrice: 34.99 },
+      { id: 'quarterly', label: '3 months', perMonth: '$3.50/mo', price: '$10.49', oldPrice: '$14.99', discount: '-30%', rawPrice: 10.49 },
+      { id: 'monthly', label: '1 month', perMonth: '$5.59/mo', price: '$5.59', oldPrice: '$7.99', discount: '-30%', rawPrice: 5.59 },
+    ]
+  }
+  return [
+    { id: 'yearly', label: '12 months', perMonth: '$4.17/mo', price: '$49.99', oldPrice: null, rawPrice: 49.99 },
+    { id: 'quarterly', label: '3 months', perMonth: '$5.00/mo', price: '$14.99', oldPrice: null, badge: 'Most popular', rawPrice: 14.99 },
+    { id: 'monthly', label: '1 month', perMonth: '$7.99/mo', price: '$7.99', oldPrice: null, rawPrice: 7.99 },
+  ]
+})
 
 // ==================== NAVIGATION ====================
 
@@ -1544,6 +1636,7 @@ function submitEmail() {
   if (isAnimating.value) return
   capture('quiz_email_submitted', { email: emailAddress.value })
   identify(emailAddress.value)
+  paymentEmail.value = emailAddress.value  // Pre-fill for payment modal
   isAnimating.value = true
   slideDirection.value = 'forward'
   currentStep.value = 'result'
@@ -1592,6 +1685,7 @@ function dismissAbandonment() {
 function goToPlatformWithDiscount() {
   capture('quiz_discount_accepted')
   showAbandonment.value = false
+  discountApplied.value = true
   showPaymentMethod.value = true
 }
 
@@ -1600,14 +1694,146 @@ function goToPlatform() {
   showPaymentMethod.value = true
 }
 
-function payWithCard() {
-  capture('quiz_payment_initiated', { method: 'card', selected_plan: selectedPlan.value })
-  window.location.href = 'https://qos.plus/lms/practice/sat'
+async function payWithCard() {
+  if (isPaymentLoading.value) return
+  paymentError.value = ''
+
+  if (!paymentEmail.value || !paymentEmail.value.includes('@')) {
+    paymentError.value = isKZ.value ? 'Укажите email' : 'Please enter your email'
+    return
+  }
+
+  isPaymentLoading.value = true
+  capture('quiz_payment_initiated', { method: 'card', selected_plan: selectedPlan.value, discount: discountApplied.value })
+
+  try {
+    const plan = subscriptionPlans.value.find(p => p.id === selectedPlan.value)
+    const res = await fetch('/api/method/lms.lms.landing_api.landing_create_subscription', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: paymentEmail.value,
+        plan: selectedPlan.value,
+        price: plan.rawPrice,
+        payment_method: 'polar',
+        discount_applied: discountApplied.value,
+      }),
+    })
+    const data = await res.json()
+    const result = data.message || data
+
+    if (result.status === 'redirect' && result.checkout_url) {
+      window.location.href = result.checkout_url
+    } else if (result.status === 'error') {
+      paymentError.value = result.message
+    } else {
+      paymentError.value = isKZ.value ? 'Ошибка оплаты. Попробуйте позже.' : 'Payment error. Please try again.'
+    }
+  } catch (e) {
+    paymentError.value = isKZ.value ? 'Ошибка соединения. Попробуйте позже.' : 'Connection error. Please try again.'
+  } finally {
+    isPaymentLoading.value = false
+  }
 }
 
-function payWithKaspi() {
-  capture('quiz_payment_initiated', { method: 'kaspi', selected_plan: selectedPlan.value })
-  window.location.href = 'https://qos.plus/lms/practice/sat'
+async function payWithKaspi() {
+  if (isPaymentLoading.value) return
+  paymentError.value = ''
+
+  if (!paymentEmail.value || !paymentEmail.value.includes('@')) {
+    paymentError.value = 'Укажите email'
+    return
+  }
+
+  // First click shows phone input, second click submits
+  if (!showKaspiPhoneInput.value) {
+    showKaspiPhoneInput.value = true
+    return
+  }
+
+  if (!kaspiPhone.value || kaspiPhone.value.replace(/\s/g, '').length < 10) {
+    paymentError.value = 'Введите номер телефона Kaspi'
+    return
+  }
+
+  isPaymentLoading.value = true
+  capture('quiz_payment_initiated', { method: 'kaspi', selected_plan: selectedPlan.value, discount: discountApplied.value })
+
+  try {
+    const plan = subscriptionPlans.value.find(p => p.id === selectedPlan.value)
+    const res = await fetch('/api/method/lms.lms.landing_api.landing_create_subscription', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email: paymentEmail.value,
+        plan: selectedPlan.value,
+        price: plan.rawPrice,
+        payment_method: 'kaspi',
+        discount_applied: discountApplied.value,
+        phone: kaspiPhone.value.replace(/\s/g, ''),
+      }),
+    })
+    const data = await res.json()
+    const result = data.message || data
+
+    if (result.status === 'pending' && result.token) {
+      kaspiToken.value = result.token
+      showPaymentMethod.value = false
+      showKaspiConfirm.value = true
+      startKaspiPolling(result.token)
+    } else if (result.status === 'error') {
+      paymentError.value = result.message
+    } else {
+      paymentError.value = 'Ошибка оплаты. Попробуйте позже.'
+    }
+  } catch (e) {
+    paymentError.value = 'Ошибка соединения. Попробуйте позже.'
+  } finally {
+    isPaymentLoading.value = false
+  }
+}
+
+function startKaspiPolling(token) {
+  let elapsed = 0
+  kaspiPollMessage.value = 'Ожидание подтверждения...'
+
+  kaspiPollInterval = setInterval(async () => {
+    elapsed += 4
+    if (elapsed > 300) {
+      clearInterval(kaspiPollInterval)
+      kaspiPollInterval = null
+      kaspiPollMessage.value = 'Платёж не получен. Попробуйте снова.'
+      return
+    }
+
+    try {
+      const res = await fetch(`/api/method/lms.lms.landing_api.landing_check_payment_status?token=${encodeURIComponent(token)}`)
+      const data = await res.json()
+      const status = (data.message || data).status
+
+      if (status === 'active') {
+        clearInterval(kaspiPollInterval)
+        kaspiPollInterval = null
+        capture('quiz_payment_success', { method: 'kaspi' })
+        window.location.href = '/lms/practice/sat?checkout=success'
+      } else if (status === 'failed') {
+        clearInterval(kaspiPollInterval)
+        kaspiPollInterval = null
+        kaspiPollMessage.value = 'Платёж не получен. Попробуйте снова.'
+      }
+    } catch (e) {
+      // Continue polling on network errors
+    }
+  }, 4000)
+}
+
+function cancelKaspiPolling() {
+  if (kaspiPollInterval) {
+    clearInterval(kaspiPollInterval)
+    kaspiPollInterval = null
+  }
+  showKaspiConfirm.value = false
+  showPaymentMethod.value = true
 }
 
 function cleanupLoader() {
@@ -2069,6 +2295,20 @@ function onStepEnter() {
 onMounted(() => {
   initPostHog()
   capture('quiz_viewed')
+
+  // Detect visitor country for currency/payment method selection
+  if (!visitorCountry.value) {
+    fetch('/api/method/lms.lms.landing_api.get_visitor_country')
+      .then(r => r.json())
+      .then(data => {
+        const code = data.message?.country_code || 'UNKNOWN'
+        visitorCountry.value = code
+        sessionStorage.setItem('visitor_country', code)
+      })
+      .catch(() => {
+        visitorCountry.value = 'UNKNOWN'
+      })
+  }
 })
 
 // Initial animation on mount
@@ -2090,6 +2330,9 @@ onMounted(() => {
 
 onUnmounted(() => {
   cleanupLoader()
+  if (kaspiPollInterval) {
+    clearInterval(kaspiPollInterval)
+  }
 })
 </script>
 
