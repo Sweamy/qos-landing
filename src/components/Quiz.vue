@@ -1717,6 +1717,18 @@ async function payWithCard() {
         price: plan.rawPrice,
         payment_method: 'polar',
         discount_applied: discountApplied.value,
+        quiz_answers: {
+          experience: answers.experience,
+          currentScore: answers.currentScore,
+          targetScore: answers.targetScore,
+          motivation: answers.motivation,
+          deadline: answers.deadline,
+          deadlineDate: answers.deadlineDate,
+          pains: answers.pains,
+          dailyTime: answers.dailyTime,
+          anchor: answers.anchor,
+          prioritySection: answers.prioritySection,
+        },
       }),
     })
     const data = await res.json()
@@ -1771,6 +1783,18 @@ async function payWithKaspi() {
         payment_method: 'kaspi',
         discount_applied: discountApplied.value,
         phone: kaspiPhone.value.replace(/\s/g, ''),
+        quiz_answers: {
+          experience: answers.experience,
+          currentScore: answers.currentScore,
+          targetScore: answers.targetScore,
+          motivation: answers.motivation,
+          deadline: answers.deadline,
+          deadlineDate: answers.deadlineDate,
+          pains: answers.pains,
+          dailyTime: answers.dailyTime,
+          anchor: answers.anchor,
+          prioritySection: answers.prioritySection,
+        },
       }),
     })
     const data = await res.json()
