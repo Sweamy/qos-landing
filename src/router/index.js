@@ -1,15 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Landing from '../components/Landing.vue'
 
-function getSessionCookie() {
-  const match = document.cookie.match(/(?:^|;\s*)sid=([^;]*)/)
-  return match ? decodeURIComponent(match[1]) : null
-}
-
 async function isLoggedIn() {
-  const sid = getSessionCookie()
-  if (!sid || sid === 'Guest') return false
-
   try {
     const controller = new AbortController()
     const timeout = setTimeout(() => controller.abort(), 3000)
