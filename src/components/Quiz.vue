@@ -1774,14 +1774,17 @@ async function payWithKaspi() {
   capture('quiz_payment_initiated', { method: 'kaspi', selected_plan: selectedPlan.value, discount: discountApplied.value })
 
   try {
-    const plan = subscriptionPlans.value.find(p => p.id === selectedPlan.value)
+    // Kaspi always uses KZT prices regardless of visitor location
+    const kaspiPrices = discountApplied.value
+      ? { monthly: 4060, quarterly: 6860, yearly: 19600 }
+      : { monthly: 5800, quarterly: 9800, yearly: 28000 }
     const res = await fetch('/api/method/lms.lms.landing_api.landing_create_subscription', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         email: paymentEmail.value,
         plan: selectedPlan.value,
-        price: plan.rawPrice,
+        price: kaspiPrices[selectedPlan.value],
         payment_method: 'kaspi',
         discount_applied: discountApplied.value,
         phone: kaspiPhone.value.replace(/\s/g, ''),
