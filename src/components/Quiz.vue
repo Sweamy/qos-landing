@@ -1383,13 +1383,13 @@ const subscriptionPlans = computed(() => {
   if (isKZ.value) {
     if (discountApplied.value) {
       return [
-        { id: 'yearly', label: '12 месяцев', perMonth: '1 633 ₸/мес', price: '19 600', oldPrice: '28 000', discount: '-30%', rawPrice: 19600 },
+        { id: 'yearly', label: '12 месяцев', perMonth: '1 633 ₸/мес', price: '19 600', oldPrice: '27 600', discount: '-30%', rawPrice: 19600 },
         { id: 'quarterly', label: '3 месяца', perMonth: '2 287 ₸/мес', price: '6 860', oldPrice: '9 800', discount: '-30%', rawPrice: 6860 },
         { id: 'monthly', label: '1 месяц', perMonth: '4 060 ₸/мес', price: '4 060', oldPrice: '5 800', discount: '-30%', rawPrice: 4060 },
       ]
     }
     return [
-      { id: 'yearly', label: '12 месяцев', perMonth: '2 333 ₸/мес', price: '28 000', oldPrice: '69 600', discount: '-60%', rawPrice: 28000 },
+      { id: 'yearly', label: '12 месяцев', perMonth: '2 300 ₸/мес', price: '27 600', oldPrice: '69 600', discount: '-60%', rawPrice: 27600 },
       { id: 'quarterly', label: '3 месяца', perMonth: '3 267 ₸/мес', price: '9 800', oldPrice: '17 400', badge: 'Самый популярный', rawPrice: 9800 },
       { id: 'monthly', label: '1 месяц', perMonth: '5 800 ₸/мес', price: '5 800', oldPrice: null, rawPrice: 5800 },
     ]
@@ -1777,7 +1777,7 @@ async function payWithKaspi() {
     // Kaspi always uses KZT prices regardless of visitor location
     const kaspiPrices = discountApplied.value
       ? { monthly: 4060, quarterly: 6860, yearly: 19600 }
-      : { monthly: 5800, quarterly: 9800, yearly: 28000 }
+      : { monthly: 5800, quarterly: 9800, yearly: 27600 }
     const res = await fetch('/api/method/lms.lms.landing_api.landing_create_subscription', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
