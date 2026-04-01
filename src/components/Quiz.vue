@@ -986,7 +986,8 @@
                   </div>
 
                   <!-- Phone input for Kaspi -->
-                    <div v-if="isKZ && showKaspiPhoneInput" class="mb-3">
+                    <!-- <div v-if="isKZ && showKaspiPhoneInput" class="mb-3"> -->
+                      <div v-if="true" class="mb-3"></div>
                     <input
                       v-model="kaspiPhone"
                       type="tel"
@@ -1009,8 +1010,8 @@
                       <svg class="w-5 h-5 text-gray-300 ml-auto" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
                     </button>
 
-                    
-                    <button v-if="isKZ" @click="payWithKaspi" :disabled="isPaymentLoading" class="w-full flex items-center gap-4 bg-white border border-gray-200 border-b-2 border-b-gray-200 rounded-xl px-5 py-4 hover:border-custom-main transition-colors disabled:opacity-50">
+                    <!-- v-if="isKZ" -->
+                    <button v-if="true" @click="payWithKaspi" :disabled="isPaymentLoading" class="w-full flex items-center gap-4 bg-white border border-gray-200 border-b-2 border-b-gray-200 rounded-xl px-5 py-4 hover:border-custom-main transition-colors disabled:opacity-50">
                       <img src="/kaspi-logo.svg" alt="Kaspi" class="w-8 h-8 object-contain" />
                       <div class="text-left">
                         <p class="font-bold text-[15px] text-gray-900">Kaspi</p>
