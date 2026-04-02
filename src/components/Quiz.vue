@@ -1942,7 +1942,7 @@
 
                     <!-- Phone input for Kaspi -->
                     <!-- <div v-if="isKZ && showKaspiPhoneInput" class="mb-3"> -->
-                    <div v-if="true" class="mb-3">
+                    <div v-if="isKZ && showKaspiPhoneInput" class="mb-3">
                       <input
                         v-model="kaspiPhone"
                         type="tel"
@@ -1992,7 +1992,7 @@
 
                       <!-- v-if="isKZ" -->
                       <button
-                        v-if="true"
+                        v-if="isKZ"
                         @click="payWithKaspi"
                         :disabled="isPaymentLoading"
                         class="w-full flex items-center gap-4 bg-white border border-gray-200 border-b-2 border-b-gray-200 rounded-xl px-5 py-4 hover:border-custom-main transition-colors disabled:opacity-50"
@@ -2324,7 +2324,7 @@ const targetOptions = [
 
 const deadlineOptions = computed(() => {
   const dates = [
-    { label: "SAT — 9 мая 2026", date: "2026-05-09", icon: "\u{1F4C5}" },
+    { label: "SAT — 2 мая 2026", date: "2026-05-09", icon: "\u{1F4C5}" },
     { label: "SAT — 6 июня 2026", date: "2026-06-06", icon: "\u{1F4C5}" },
     { label: "SAT — 22 августа 2026", date: "2026-08-22", icon: "\u{1F4C5}" },
   ];
