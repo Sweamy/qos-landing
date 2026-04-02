@@ -2895,19 +2895,19 @@ function startLoader() {
   });
 
   // 0→18: fast burst (feels like it starts working immediately)
-  tl.to(obj, { val: 18, duration: 1.2, ease: "power2.out" })
+  tl.to(obj, { val: 18, duration: 0.6, ease: "power2.out" })
     // 18→26: slow crawl (analyzing...)
-    .to(obj, { val: 26, duration: 1.8, ease: "power1.inOut" })
+    .to(obj, { val: 26, duration: 0.9, ease: "power1.inOut" })
     // 26→42: medium speed
-    .to(obj, { val: 42, duration: 1.5, ease: "none" })
+    .to(obj, { val: 42, duration: 0.8, ease: "none" })
     // 42→48: stall (feels like heavy computation)
-    .to(obj, { val: 48, duration: 1.6, ease: "power3.in" })
+    .to(obj, { val: 48, duration: 0.8, ease: "power3.in" })
     // 48→63: quick burst again
-    .to(obj, { val: 63, duration: 1.0, ease: "power2.out" })
+    .to(obj, { val: 63, duration: 0.5, ease: "power2.out" })
     // 63→70: slow near the interruption
-    .to(obj, { val: 70, duration: 1.4, ease: "power1.in" })
+    .to(obj, { val: 70, duration: 0.7, ease: "power1.in" })
     // 70→75: crawl to pause point
-    .to(obj, { val: 75, duration: 1.5, ease: "power2.in" });
+    .to(obj, { val: 75, duration: 0.7, ease: "power2.in" });
 
   loaderTween = tl;
 }
@@ -2948,13 +2948,13 @@ function answerInterrupt(value) {
   });
 
   // 75→88: quick burst (incorporating the answer)
-  tl.to(obj, { val: 88, duration: 1.2, ease: "power2.out" })
+  tl.to(obj, { val: 88, duration: 0.6, ease: "power2.out" })
     // 88→94: slow (finishing up)
-    .to(obj, { val: 94, duration: 1.5, ease: "power1.inOut" })
+    .to(obj, { val: 94, duration: 0.8, ease: "power1.inOut" })
     // 94→98: crawl
-    .to(obj, { val: 98, duration: 1.0, ease: "power2.in" })
+    .to(obj, { val: 98, duration: 0.5, ease: "power2.in" })
     // 98→100: final snap
-    .to(obj, { val: 100, duration: 0.4, ease: "power2.out" });
+    .to(obj, { val: 100, duration: 0.3, ease: "power2.out" });
 
   loaderTween = tl;
 }
