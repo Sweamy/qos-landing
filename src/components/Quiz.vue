@@ -2070,13 +2070,13 @@
                       </template>
                       <template v-else>
                         <div class="text-xs text-gray-400 line-through">
-                          $49.99
+                          $54.99
                         </div>
                         <div class="text-2xl font-extrabold text-custom-main">
-                          $34.99 <span class="text-sm font-medium">/year</span>
+                          $38.99 <span class="text-sm font-medium">/year</span>
                         </div>
                         <div class="text-[13px] text-gray-500 mt-1">
-                          $2.92/mo · save $15.00
+                          $3.25/mo · save $16.00
                         </div>
                       </template>
                     </div>
@@ -2093,7 +2093,7 @@
                       </div>
                       <div class="text-right">
                         <div class="text-lg font-extrabold">
-                          {{ isKZ ? "9 800 ₸" : "$14.99" }}
+                          {{ isKZ ? "9 800 ₸" : "$19.99" }}
                         </div>
                       </div>
                     </div>
@@ -2678,29 +2678,29 @@ const subscriptionPlans = computed(() => {
       {
         id: "yearly",
         label: "12 months",
-        perMonth: "$2.92/mo",
-        price: "$34.99",
-        oldPrice: "$49.99",
-        discount: "-30%",
-        rawPrice: 34.99,
+        perMonth: "$3.25/mo",
+        price: "$38.99",
+        oldPrice: "$54.99",
+        discount: "-29%",
+        rawPrice: 38.99,
       },
       {
         id: "quarterly",
         label: "3 months",
-        perMonth: "$3.50/mo",
-        price: "$10.49",
-        oldPrice: "$14.99",
+        perMonth: "$4.66/mo",
+        price: "$13.99",
+        oldPrice: "$19.99",
         discount: "-30%",
-        rawPrice: 10.49,
+        rawPrice: 13.99,
       },
       {
         id: "monthly",
         label: "1 month",
-        perMonth: "$5.59/mo",
-        price: "$5.59",
-        oldPrice: "$7.99",
-        discount: "-30%",
-        rawPrice: 5.59,
+        perMonth: "$8.99/mo",
+        price: "$8.99",
+        oldPrice: "$11.99",
+        discount: "-25%",
+        rawPrice: 8.99,
       },
     ];
   }
@@ -2708,27 +2708,27 @@ const subscriptionPlans = computed(() => {
     {
       id: "yearly",
       label: "12 months",
-      perMonth: "$4.17/mo",
-      price: "$49.99",
+      perMonth: "$4.58/mo",
+      price: "$54.99",
       oldPrice: null,
-      rawPrice: 49.99,
+      rawPrice: 54.99,
     },
     {
       id: "quarterly",
       label: "3 months",
-      perMonth: "$5.00/mo",
-      price: "$14.99",
+      perMonth: "$6.66/mo",
+      price: "$19.99",
       oldPrice: null,
       badge: "Most popular",
-      rawPrice: 14.99,
+      rawPrice: 19.99,
     },
     {
       id: "monthly",
       label: "1 month",
-      perMonth: "$7.99/mo",
-      price: "$7.99",
+      perMonth: "$11.99/mo",
+      price: "$11.99",
       oldPrice: null,
-      rawPrice: 7.99,
+      rawPrice: 11.99,
     },
   ];
 });
