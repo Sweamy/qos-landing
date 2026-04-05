@@ -3050,9 +3050,12 @@ async function payWithCard() {
   });
 
   try {
-    const plan = subscriptionPlans.value.find(
-      (p) => p.id === selectedPlan.value,
-    );
+    // Polar charges in USD regardless of displayed currency, so always send
+    // USD price from the whitelist (KZ users see KZT but Polar backend expects USD).
+    const polarUsdPrices = discountApplied.value
+      ? { yearly: 38.99, quarterly: 13.99, monthly: 8.99 }
+      : { yearly: 54.99, quarterly: 19.99, monthly: 11.99 };
+    const polarPrice = polarUsdPrices[selectedPlan.value];
     const res = await fetch(
       "/api/method/lms.lms.landing_api.landing_create_subscription",
       {
@@ -3061,7 +3064,7 @@ async function payWithCard() {
         body: JSON.stringify({
           email: paymentEmail.value,
           plan: selectedPlan.value,
-          price: plan.rawPrice,
+          price: polarPrice,
           payment_method: "polar",
           discount_applied: discountApplied.value,
           quiz_answers: {
