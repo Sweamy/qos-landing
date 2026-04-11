@@ -1920,14 +1920,18 @@
                       class="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5"
                     ></div>
                     <h3 class="text-[20px] font-black text-center mb-1">
-                      {{ isKZ ? "Способ оплаты" : "Payment method" }}
+                      <!-- {{ isKZ ? "Способ оплаты" : "Payment method" }} -->
+                      Способ оплаты
                     </h3>
                     <p class="text-[14px] text-gray-500 text-center mb-4">
+                      <!--
                       {{
                         isKZ
                           ? "Выбери удобный способ"
                           : "Choose your preferred method"
                       }}
+                      -->
+                      Выбери удобный способ
                     </p>
 
                     <!-- Email input -->
@@ -1940,8 +1944,8 @@
                       />
                     </div>
 
-                    <!-- Phone input for Kaspi -->
-                    <!-- <div v-if="isKZ && showKaspiPhoneInput" class="mb-3"> -->
+                    <!-- Phone input for Kaspi — TEMPORARILY DISABLED (Polar-only mode) -->
+                    <!--
                     <div v-if="isKZ && showKaspiPhoneInput" class="mb-3">
                       <input
                         v-model="kaspiPhone"
@@ -1951,6 +1955,7 @@
                         class="w-full px-4 py-3 rounded-xl border border-gray-200 text-[15px] text-gray-900 placeholder-gray-400 focus:outline-none focus:border-custom-main transition-colors"
                       />
                     </div>
+                    -->
 
                     <!-- Error message -->
                     <p
@@ -1969,7 +1974,8 @@
                         <span class="text-2xl">💳</span>
                         <div class="text-left">
                           <p class="font-bold text-[15px] text-gray-900">
-                            {{ isKZ ? "Картой" : "Card" }}
+                            <!-- {{ isKZ ? "Картой" : "Card" }} -->
+                            Картой
                           </p>
                           <p class="text-[12px] text-gray-400">
                             Visa, Mastercard
@@ -1990,7 +1996,8 @@
                         </svg>
                       </button>
 
-                      <!-- v-if="isKZ" -->
+                      <!-- Kaspi payment button — TEMPORARILY DISABLED (Polar-only mode) -->
+                      <!--
                       <button
                         v-if="isKZ"
                         @click="payWithKaspi"
@@ -2024,6 +2031,7 @@
                           />
                         </svg>
                       </button>
+                      -->
                     </div>
                   </div>
                 </div>
@@ -2057,6 +2065,7 @@
                         class="inline-block bg-emerald-500 text-white text-xs font-bold px-3 py-1 rounded-lg mb-2"
                         >-30%</span
                       >
+                      <!--
                       <template v-if="isKZ">
                         <div class="text-xs text-gray-400 line-through">
                           28 000 ₸
@@ -2079,21 +2088,34 @@
                           $3.25/mo · save $16.00
                         </div>
                       </template>
+                      -->
+                      <div class="text-xs text-gray-400 line-through">
+                        $54.99
+                      </div>
+                      <div class="text-2xl font-extrabold text-custom-main">
+                        $38.99 <span class="text-sm font-medium">/год</span>
+                      </div>
+                      <div class="text-[13px] text-gray-500 mt-1">
+                        $3.25/мес · экономия $16.00
+                      </div>
                     </div>
 
                     <div class="paywall-plan mb-5">
                       <div class="paywall-radio"></div>
                       <div class="flex-1">
                         <div class="font-bold text-base">
-                          {{ isKZ ? "3 месяца" : "3 months" }}
+                          <!-- {{ isKZ ? "3 месяца" : "3 months" }} -->
+                          3 месяца
                         </div>
                         <div class="text-xs text-gray-500">
-                          {{ isKZ ? "без скидки" : "no discount" }}
+                          <!-- {{ isKZ ? "без скидки" : "no discount" }} -->
+                          без скидки
                         </div>
                       </div>
                       <div class="text-right">
                         <div class="text-lg font-extrabold">
-                          {{ isKZ ? "9 800 ₸" : "$19.99" }}
+                          <!-- {{ isKZ ? "9 800 ₸" : "$19.99" }} -->
+                          $19.99
                         </div>
                       </div>
                     </div>
@@ -2114,7 +2136,8 @@
                 </div>
               </Transition>
 
-              <!-- Kaspi Confirmation overlay -->
+              <!-- Kaspi Confirmation overlay — TEMPORARILY DISABLED (Polar-only mode) -->
+              <!--
               <Transition name="toast">
                 <div
                   v-if="showKaspiConfirm"
@@ -2155,6 +2178,7 @@
                   </div>
                 </div>
               </Transition>
+              -->
             </div>
           </div>
         </Transition>
@@ -2608,7 +2632,9 @@ const secondaryFeatures = computed(() => {
   return ALL_SECONDARY_FEATURES;
 });
 
-const isKZ = computed(() => visitorCountry.value === "KZ");
+// TEMPORARILY DISABLED: force Polar (USD) only — Kaspi and KZ localization hidden.
+// const isKZ = computed(() => visitorCountry.value === "KZ");
+const isKZ = computed(() => false);
 
 const subscriptionPlans = computed(() => {
   if (isKZ.value) {
@@ -2672,13 +2698,13 @@ const subscriptionPlans = computed(() => {
       },
     ];
   }
-  // USD pricing for non-KZ
+  // USD pricing for non-KZ — labels hard-coded in Russian for Polar-only mode.
   if (discountApplied.value) {
     return [
       {
         id: "yearly",
-        label: "12 months",
-        perMonth: "$3.25/mo",
+        label: "12 месяцев",
+        perMonth: "$3.25/мес",
         price: "$38.99",
         oldPrice: "$54.99",
         discount: "-29%",
@@ -2686,8 +2712,8 @@ const subscriptionPlans = computed(() => {
       },
       {
         id: "quarterly",
-        label: "3 months",
-        perMonth: "$4.66/mo",
+        label: "3 месяца",
+        perMonth: "$4.66/мес",
         price: "$13.99",
         oldPrice: "$19.99",
         discount: "-30%",
@@ -2695,8 +2721,8 @@ const subscriptionPlans = computed(() => {
       },
       {
         id: "monthly",
-        label: "1 month",
-        perMonth: "$8.99/mo",
+        label: "1 месяц",
+        perMonth: "$8.99/мес",
         price: "$8.99",
         oldPrice: "$11.99",
         discount: "-25%",
@@ -2707,25 +2733,25 @@ const subscriptionPlans = computed(() => {
   return [
     {
       id: "yearly",
-      label: "12 months",
-      perMonth: "$4.58/mo",
+      label: "12 месяцев",
+      perMonth: "$4.58/мес",
       price: "$54.99",
       oldPrice: null,
       rawPrice: 54.99,
     },
     {
       id: "quarterly",
-      label: "3 months",
-      perMonth: "$6.66/mo",
+      label: "3 месяца",
+      perMonth: "$6.66/мес",
       price: "$19.99",
       oldPrice: null,
-      badge: "Most popular",
+      badge: "Самый популярный",
       rawPrice: 19.99,
     },
     {
       id: "monthly",
-      label: "1 month",
-      perMonth: "$11.99/mo",
+      label: "1 месяц",
+      perMonth: "$11.99/мес",
       price: "$11.99",
       oldPrice: null,
       rawPrice: 11.99,
@@ -3036,9 +3062,10 @@ async function payWithCard() {
   paymentError.value = "";
 
   if (!paymentEmail.value || !paymentEmail.value.includes("@")) {
-    paymentError.value = isKZ.value
-      ? "Укажите email"
-      : "Please enter your email";
+    // paymentError.value = isKZ.value
+    //   ? "Укажите email"
+    //   : "Please enter your email";
+    paymentError.value = "Укажите email";
     return;
   }
 
@@ -3090,14 +3117,16 @@ async function payWithCard() {
     } else if (result.status === "error") {
       paymentError.value = result.message;
     } else {
-      paymentError.value = isKZ.value
-        ? "Ошибка оплаты. Попробуйте позже."
-        : "Payment error. Please try again.";
+      // paymentError.value = isKZ.value
+      //   ? "Ошибка оплаты. Попробуйте позже."
+      //   : "Payment error. Please try again.";
+      paymentError.value = "Ошибка оплаты. Попробуйте позже.";
     }
   } catch (e) {
-    paymentError.value = isKZ.value
-      ? "Ошибка соединения. Попробуйте позже."
-      : "Connection error. Please try again.";
+    // paymentError.value = isKZ.value
+    //   ? "Ошибка соединения. Попробуйте позже."
+    //   : "Connection error. Please try again.";
+    paymentError.value = "Ошибка соединения. Попробуйте позже.";
   } finally {
     isPaymentLoading.value = false;
   }
@@ -3957,18 +3986,19 @@ onMounted(() => {
   capture("quiz_viewed");
 
   // Detect visitor country for currency/payment method selection
-  if (!visitorCountry.value) {
-    fetch("/api/method/lms.lms.landing_api.get_visitor_country")
-      .then((r) => r.json())
-      .then((data) => {
-        const code = data.message?.country_code || "UNKNOWN";
-        visitorCountry.value = code;
-        sessionStorage.setItem("visitor_country", code);
-      })
-      .catch(() => {
-        visitorCountry.value = "UNKNOWN";
-      });
-  }
+  // TEMPORARILY DISABLED: force everyone to Polar (USD) only. Kaspi/geography commented out.
+  // if (!visitorCountry.value) {
+  //   fetch("/api/method/lms.lms.landing_api.get_visitor_country")
+  //     .then((r) => r.json())
+  //     .then((data) => {
+  //       const code = data.message?.country_code || "UNKNOWN";
+  //       visitorCountry.value = code;
+  //       sessionStorage.setItem("visitor_country", code);
+  //     })
+  //     .catch(() => {
+  //       visitorCountry.value = "UNKNOWN";
+  //     });
+  // }
 });
 
 // Initial animation on mount
