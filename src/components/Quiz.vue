@@ -2346,27 +2346,34 @@ const targetOptions = [
   { value: 1200, desc: "Уверенный фундамент", badge: null },
 ];
 
+const calculateDaysUntil = (dateStr) => {
+  if (!dateStr) return null;
+  const [year, month, day] = dateStr.split("-");
+  const targetDate = new Date(year, month - 1, day);
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const diff = Math.round((targetDate - today) / (1000 * 60 * 60 * 24));
+  return diff > 0 ? diff : null;
+};
+
 const deadlineOptions = computed(() => {
   const dates = [
-    { label: "SAT — 2 мая 2026", date: "2026-05-09", icon: "\u{1F4C5}" },
+    { label: "SAT — 2 мая 2026", date: "2026-05-02", icon: "\u{1F4C5}" },
     { label: "SAT — 6 июня 2026", date: "2026-06-06", icon: "\u{1F4C5}" },
     { label: "SAT — 22 августа 2026", date: "2026-08-22", icon: "\u{1F4C5}" },
   ];
-  const today = new Date();
+  
   const specific = dates
-    .filter((d) => new Date(d.date) > today)
     .map((d) => {
-      const diff = Math.ceil(
-        (new Date(d.date) - today) / (1000 * 60 * 60 * 24),
-      );
       return {
         value: d.label,
-        days: diff,
+        days: calculateDaysUntil(d.date),
         icon: d.icon,
         label: d.label,
         date: d.date,
       };
-    });
+    })
+    .filter((d) => d.days !== null);
 
   // "Не определился" first, then specific dates, then "После августа"
   const options = [
@@ -2586,11 +2593,7 @@ const anchorMotivation = computed(() => {
 });
 
 const daysUntilExam = computed(() => {
-  if (!answers.deadlineDate) return null;
-  const diff = Math.ceil(
-    (new Date(answers.deadlineDate) - new Date()) / (1000 * 60 * 60 * 24),
-  );
-  return diff > 0 ? diff : null;
+  return calculateDaysUntil(answers.deadlineDate);
 });
 
 const paywallTitle = computed(() => {
