@@ -1840,7 +1840,7 @@
               </div>
 
               <!-- Promo code -->
-              <div ref="pwPromo" class="opacity-0">
+              <!-- <div ref="pwPromo" class="opacity-0">
                 <button
                   v-if="!showPromoInput"
                   @click="showPromoInput = true"
@@ -1860,7 +1860,7 @@
                     OK
                   </button>
                 </div>
-              </div>
+              </div> -->
 
               <!-- Sticky CTA -->
               <div
