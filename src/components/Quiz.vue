@@ -1821,7 +1821,8 @@
                         {{ plan.oldPrice }}{{ isKZ ? " ₸" : "" }}
                       </div>
                       <div class="text-lg font-extrabold">
-                        {{ plan.price }}{{ isKZ ? " ₸" : "" }}
+                        <span v-if="plan.isFree">{{ isKZ ? "0 ₸" : "Free" }}</span>
+                        <span v-else>{{ plan.price }}{{ isKZ ? " ₸" : "" }}</span>
                       </div>
                     </div>
                   </div>
@@ -1966,7 +1967,18 @@
                     </p>
 
                     <div class="space-y-3">
+                      <!-- Free plan: single CTA, no payment method picker -->
                       <button
+                        v-if="selectedPlan === 'free'"
+                        @click="payFree"
+                        :disabled="isPaymentLoading"
+                        class="w-full flex items-center justify-center gap-3 bg-custom-main text-white font-bold text-[15px] rounded-xl px-5 py-4 hover:opacity-90 transition-opacity disabled:opacity-50"
+                      >
+                        <span class="text-2xl">🚀</span>
+                        <span>{{ isPaymentLoading ? "Создаём аккаунт…" : "Начать бесплатно" }}</span>
+                      </button>
+                      <button
+                        v-if="selectedPlan !== 'free'"
                         @click="payWithCard"
                         :disabled="isPaymentLoading"
                         class="w-full flex items-center gap-4 bg-white border border-gray-200 border-b-2 border-b-gray-200 rounded-xl px-5 py-4 hover:border-custom-main transition-colors disabled:opacity-50"
@@ -2266,7 +2278,10 @@ const answers = reactive({
 
 const hasSeenAbandonment = ref(false);
 const showAbandonment = ref(false);
-const selectedPlan = ref("quarterly");
+// Default to yearly now that quarterly is hidden from the UI (per
+// freemium migration 2026-05). Users see Yearly / Monthly / Free in that
+// order; yearly is the default-selected card.
+const selectedPlan = ref("yearly");
 const promoCode = ref("");
 const showPromoInput = ref(false);
 const showPaymentMethod = ref(false);
@@ -2639,7 +2654,31 @@ const secondaryFeatures = computed(() => {
 // const isKZ = computed(() => visitorCountry.value === "KZ");
 const isKZ = computed(() => false);
 
-const subscriptionPlans = computed(() => {
+// Plans that survive the quarterly hide-out. The 3-month tier is intentionally
+// hidden from the UI as part of the freemium migration (we want users on
+// either monthly, yearly, or free — quarterly muddied the conversion). Code
+// is preserved in the per-region plan tables below so we can re-enable it
+// quickly by removing the filter or flipping `SHOW_QUARTERLY`.
+const SHOW_QUARTERLY = false;
+
+// Free plan card appended to every region/discount permutation. Distinct
+// id="free" so payment dispatch can branch on it.
+const FREE_PLAN = {
+  id: "free",
+  label: "Бесплатно",
+  perMonth: "5 вопросов в день",
+  price: "0",
+  oldPrice: null,
+  rawPrice: 0,
+  isFree: true,
+};
+
+function _filterPlans(list) {
+  let result = SHOW_QUARTERLY ? list : list.filter((p) => p.id !== "quarterly");
+  return [...result, FREE_PLAN];
+}
+
+const subscriptionPlansRaw = computed(() => {
   if (isKZ.value) {
     if (discountApplied.value) {
       return [
@@ -2761,6 +2800,13 @@ const subscriptionPlans = computed(() => {
     },
   ];
 });
+
+// Public computed used by the template — applies the quarterly filter and
+// appends the Free plan so we don't have to repeat the logic in each region
+// branch.
+const subscriptionPlans = computed(() =>
+  _filterPlans(subscriptionPlansRaw.value),
+);
 
 // ==================== NAVIGATION ====================
 
@@ -3057,7 +3103,67 @@ function goToPlatformWithDiscount() {
 
 function goToPlatform() {
   capture("quiz_paywall_cta_clicked", { selected_plan: selectedPlan.value });
+  // Free plan: skip the payment modal entirely. The free flow needs an
+  // email but no payment method, so we open a tiny email-only modal via
+  // the same showPaymentMethod surface — payFree() handles the dispatch.
+  // Still uses showPaymentMethod so the existing email input UI is reused.
   showPaymentMethod.value = true;
+}
+
+async function payFree() {
+  if (isPaymentLoading.value) return;
+  paymentError.value = "";
+
+  if (!paymentEmail.value || !paymentEmail.value.includes("@")) {
+    paymentError.value = "Укажите email";
+    return;
+  }
+
+  isPaymentLoading.value = true;
+  capture("quiz_payment_initiated", {
+    method: "free",
+    selected_plan: "free",
+  });
+
+  try {
+    const res = await fetch(
+      "/api/method/lms.lms.landing_api.landing_create_free_account",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: paymentEmail.value,
+          quiz_answers: {
+            experience: answers.experience,
+            currentScore: answers.currentScore,
+            targetScore: answers.targetScore,
+            motivation: answers.motivation,
+            deadline: answers.deadline,
+            deadlineDate: answers.deadlineDate,
+            pains: answers.pains,
+            dailyTime: answers.dailyTime,
+            anchor: answers.anchor,
+            prioritySection: answers.prioritySection,
+          },
+        }),
+      },
+    );
+    const data = await res.json();
+    const result = data.message || data;
+
+    if (result.status === "ok" && result.redirect_url) {
+      capture("quiz_payment_success", { method: "free" });
+      window.location.href = result.redirect_url;
+      return;
+    }
+
+    paymentError.value =
+      result.message || "Не удалось создать аккаунт. Попробуйте ещё раз.";
+  } catch (err) {
+    paymentError.value = "Ошибка сети. Попробуйте снова.";
+  } finally {
+    isPaymentLoading.value = false;
+  }
 }
 
 async function payWithCard() {
