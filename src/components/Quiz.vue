@@ -1769,7 +1769,8 @@
                 Каждый день без подготовки — минус баллы на экзамене
               </p>
 
-              <!-- Guarantee -->
+              <!-- Guarantee — hidden in FREE-ONLY MODE (no payment = no money-back) -->
+              <!--
               <div
                 ref="pwGuarantee"
                 class="flex items-center justify-center gap-2 bg-emerald-50 border border-emerald-200 rounded-xl px-4 py-3 mb-5 opacity-0"
@@ -1779,6 +1780,7 @@
                   >Гарантия результата — или вернём деньги</span
                 >
               </div>
+              -->
 
               <!-- Plan cards -->
               <div ref="pwPlans" class="space-y-3 mb-4 opacity-0">
@@ -1875,6 +1877,8 @@
                   >
                     Продолжить &rarr;
                   </button>
+                  <!-- Paid-flow subtext hidden in FREE-ONLY MODE (no subscription / no payment) -->
+                  <!--
                   <p class="text-[12px] text-gray-400 mt-2">
                     Без обязательств, отмени в любой момент
                   </p>
@@ -1885,6 +1889,7 @@
                       >Уже оплатил?</a
                     >
                   </p>
+                  -->
                 </div>
               </div>
 
@@ -2278,10 +2283,11 @@ const answers = reactive({
 
 const hasSeenAbandonment = ref(false);
 const showAbandonment = ref(false);
-// Default to yearly now that quarterly is hidden from the UI (per
-// freemium migration 2026-05). Users see Yearly / Monthly / Free in that
-// order; yearly is the default-selected card.
-const selectedPlan = ref("yearly");
+// FREE-ONLY MODE (2026-06): only the Free plan is shown, so it is the default
+// selection. Previously defaulted to "yearly" (freemium migration 2026-05,
+// when users saw Yearly / Monthly / Free). Restore "yearly" when re-enabling
+// paid tiers (see FREE_ONLY below).
+const selectedPlan = ref("free");
 const promoCode = ref("");
 const showPromoInput = ref(false);
 const showPaymentMethod = ref(false);
@@ -2661,6 +2667,12 @@ const isKZ = computed(() => false);
 // quickly by removing the filter or flipping `SHOW_QUARTERLY`.
 const SHOW_QUARTERLY = false;
 
+// FREE-ONLY MODE (2026-06): paid plans are temporarily disabled — we want
+// everyone on free access for now. The per-region paid plan tables and the
+// payWithCard/payWithKaspi flows below are intentionally PRESERVED so we can
+// re-enable paid tiers quickly by flipping this back to `false`.
+const FREE_ONLY = true;
+
 // Free plan card appended to every region/discount permutation. Distinct
 // id="free" so payment dispatch can branch on it.
 const FREE_PLAN = {
@@ -2674,6 +2686,9 @@ const FREE_PLAN = {
 };
 
 function _filterPlans(list) {
+  // FREE-ONLY MODE: show nothing but the Free plan. Flip `FREE_ONLY` to false
+  // to bring the paid tiers (`list`) back.
+  if (FREE_ONLY) return [FREE_PLAN];
   let result = SHOW_QUARTERLY ? list : list.filter((p) => p.id !== "quarterly");
   return [...result, FREE_PLAN];
 }
@@ -3077,6 +3092,15 @@ function goToPaywall() {
 }
 
 function handlePaywallBack() {
+  // FREE-ONLY MODE: the abandonment overlay only upsells a paid-plan discount,
+  // which is meaningless when everything is free — so skip it and just go back.
+  // Restore the discount-upsell branch below when re-enabling paid tiers.
+  if (FREE_ONLY) {
+    capture("quiz_paywall_abandoned");
+    slideDirection.value = "backward";
+    currentStep.value = "socialProofWall";
+    return;
+  }
   if (!hasSeenAbandonment.value) {
     capture("quiz_paywall_abandonment_shown", {
       selected_plan: selectedPlan.value,
