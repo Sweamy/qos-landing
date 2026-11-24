@@ -2378,12 +2378,15 @@ const calculateDaysUntil = (dateStr) => {
 };
 
 const deadlineOptions = computed(() => {
+  // 2026-27 SAT dates from College Board (same for international students).
+  // past dates drop out on their own; add the next school year's dates here.
   const dates = [
-    { label: "SAT — 2 мая 2026", date: "2026-05-02", icon: "\u{1F4C5}" },
-    { label: "SAT — 6 июня 2026", date: "2026-06-06", icon: "\u{1F4C5}" },
-    { label: "SAT — 22 августа 2026", date: "2026-08-22", icon: "\u{1F4C5}" },
+    { label: "SAT — 5 декабря 2026", date: "2026-12-05", icon: "\u{1F4C5}" },
+    { label: "SAT — 6 марта 2027", date: "2027-03-06", icon: "\u{1F4C5}" },
+    { label: "SAT — 1 мая 2027", date: "2027-05-01", icon: "\u{1F4C5}" },
+    { label: "SAT — 5 июня 2027", date: "2027-06-05", icon: "\u{1F4C5}" },
   ];
-  
+
   const specific = dates
     .map((d) => {
       return {
@@ -2394,9 +2397,10 @@ const deadlineOptions = computed(() => {
         date: d.date,
       };
     })
-    .filter((d) => d.days !== null);
+    .filter((d) => d.days !== null)
+    .slice(0, 3);
 
-  // "Не определился" first, then specific dates, then "После августа"
+  // "Не определился" first, then the next dates, then "Позже"
   const options = [
     {
       value: "undecided",
@@ -2407,9 +2411,9 @@ const deadlineOptions = computed(() => {
     },
     ...specific,
     {
-      value: "after-august",
+      value: "later",
       icon: "\u{1F4C5}",
-      label: "После августа",
+      label: "Позже",
       days: null,
       date: null,
     },
